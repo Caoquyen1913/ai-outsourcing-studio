@@ -1,0 +1,26 @@
+description = "Submit a new product idea to the AI Outsourcing Studio CEO"
+
+prompt = """
+A new pitch has arrived:
+
+> {{args}}
+
+Your job (Reception Desk mode):
+
+1. First, load the charter and CEO role prompt:
+   - Read CLAUDE.md, AGENTS.md, and .claude/agents/ceo.md in full.
+2. Append the pitch to .company/inbox.md under a new `## Pitch (<ISO timestamp>)` heading.
+3. Check .company/state.json. If `active_project` is not null, ask the user whether to queue this idea, abandon the active project, or run in parallel (parallel is not supported — warn if chosen).
+4. If no active project, ADOPT the CEO system prompt from .claude/agents/ceo.md verbatim and execute CEO's Phase 1–7 workflow:
+   - Read the inbox
+   - Scope gate (3 plausible misunderstandings)
+   - Discovery interview with the user (3–6 questions)
+   - Write BRIEF.md with `## Win conditions` section
+   - Update state.json
+   - File initial tasks via `node scripts/task.mjs add`
+   - Run `node scripts/task.mjs sync <slug> --role ceo ...`
+   - Hand off to BA by loading .claude/agents/ba.md next (or prompt user to continue)
+5. Return a short summary to the user: pitch received, slug assigned, CEO is in discovery, next action.
+
+IMPORTANT: Do NOT skip reading CLAUDE.md. Do NOT skip the sync entry. Do NOT invent scope beyond what the user confirms in discovery.
+"""

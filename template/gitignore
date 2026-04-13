@@ -1,0 +1,9 @@
+node_modules/
+deliverables/*/node_modules/
+deliverables/*/.next/
+deliverables/*/dist/
+deliverables/*/build/
+deliverables/*/.env
+deliverables/*/.env.local
+*.log
+.DS_Store

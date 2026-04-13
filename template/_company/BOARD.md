@@ -1,7 +1,7 @@
 # Outsourcing Studio — Live Board
-_Updated: 2026-04-13 11:06:21_
+_Updated: 2026-04-13 11:24:30_
 
-**Active project:** _none_ — run `/idea "<pitch>"` to start.
+**Active project:** _none_ — run `/aos-idea "<pitch>"` to start.
 
 ## Roles
 | Role             | Status     | Current task                   | Last action         |

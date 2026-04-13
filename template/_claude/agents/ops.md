@@ -53,7 +53,7 @@ Mission: **"Any engineer should be able to clone the repo, run one command, and 
 6. **Update state.json.** `artifacts.RUNBOOK = "partial"`, your slot.
 7. Return.
 
-### When spawned at `/ship` (finalization)
+### When spawned at `/aos-ship` (finalization)
 
 1. Re-read ARCH.md and DATA-MODEL.md for any env-var/infra requirements.
 2. Fill every TBD in RUNBOOK.md.

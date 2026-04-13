@@ -84,7 +84,7 @@ When the handoff back from Dev arrives, your job is to PROVE the bugs are gone, 
 5. Loop continues until ZERO open or in_review bugs in the wave. Only then is the wave actually done.
 6. Sync.
 
-### At `/ship`
+### At `/aos-ship`
 
 1. Run the full suite including any slow/e2e tiers.
 2. Confirm every row in the coverage matrix is `pass`.

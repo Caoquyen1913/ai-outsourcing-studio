@@ -4,14 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-**AI Outsourcing Studio** — a Claude Code project that simulates a software outsourcing company staffed entirely by Claude subagents. The user gives an idea (a "pitch") to the CEO via `/idea "<pitch>"`, and the company — CEO, CTO, BA, Designer, Dev, DBA, Ops, QA/QC, plus a Devil's Advocate critic — collaborates to produce a complete web application under `deliverables/<project-slug>/`.
+**AI Outsourcing Studio** — a Claude Code project that simulates a software outsourcing company staffed entirely by Claude subagents. The user gives an idea (a "pitch") to the CEO via `/aos-idea "<pitch>"`, and the company — CEO, CTO, BA, Designer, Dev, DBA, Ops, QA/QC, plus a Devil's Advocate critic — collaborates to produce a complete web application under `deliverables/<project-slug>/`.
 
 The main Claude session is the **Reception Desk**: its only job is to route user input to the CEO and relay the company's output back. All real work happens inside subagents.
 
 ## The operating cycle
 
 ```
-User → /idea "<pitch>"
+User → /aos-idea "<pitch>"
   └─ CEO discovers scope (asks user questions) → writes BRIEF.md
        ├─ BA       → SPEC.md    (user stories, acceptance criteria)
        ├─ Designer → DESIGN.md  (screens, states, tokens, copy, a11y)
@@ -50,7 +50,7 @@ Each artifact is a durable file in `.company/projects/<slug>/`. Each agent reads
 | `.company/CHATLOG.md`                      | hook-append    | Do not edit by hand |
 | `.company/state.json`                      | all roles (update their own slot) | Machine-readable status |
 
-The `.company/inbox.md` file is where `/idea` drops raw user pitches; CEO reads and clears it.
+The `.company/inbox.md` file is where `/aos-idea` drops raw user pitches; CEO reads and clears it.
 
 ## Roles
 
@@ -81,15 +81,15 @@ Two mechanisms, both first-class:
 
 `.company/BOARD.md` is the live dashboard. It's regenerated automatically by `scripts/update-board.mjs`, which runs as a `PostToolUse` hook on every `Write|Edit` under `.company/` or `deliverables/`. Each role updates its own slot in `.company/state.json` before returning; the script renders the markdown from that JSON.
 
-View it anytime with `/board`. It prints on session start automatically.
+View it anytime with `/aos-board`. It prints on session start automatically.
 
 ## Slash commands
 
-- `/idea "<pitch>"` — drop a new idea into the company.
-- `/board` — print the live board.
-- `/standup` — ask every role for a one-line status (useful mid-project).
-- `/kickoff` — (re)trigger CEO discovery on the active project.
-- `/ship` — tell Ops + QA + CEO to finalize and sign off.
+- `/aos-idea "<pitch>"` — drop a new idea into the company.
+- `/aos-board` — print the live board.
+- `/aos-standup` — ask every role for a one-line status (useful mid-project).
+- `/aos-kickoff` — (re)trigger CEO discovery on the active project.
+- `/aos-ship` — tell Ops + QA + CEO to finalize and sign off.
 
 ## Win Condition Doctrine
 

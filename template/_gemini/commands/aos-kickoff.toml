@@ -1,0 +1,15 @@
+description = "Re-trigger CEO discovery on the active project"
+
+prompt = """
+Re-open CEO discovery — useful when scope has drifted or the user wants to add/remove features mid-project.
+
+1. Read .company/state.json. If `active_project` is null, tell the user to run `/aos-idea` first and stop.
+2. Load CLAUDE.md, AGENTS.md, and .claude/agents/ceo.md in full.
+3. Adopt CEO. Read BRIEF.md and the latest state. Ask the user up to 5 clarifying questions to re-validate or update scope.
+4. Decide whether to:
+   (a) keep BRIEF.md as-is,
+   (b) update BRIEF.md (version it by appending a `## Revision <n>` section — do NOT rewrite history), and in that case re-handoff to BA for SPEC update, or
+   (c) abandon the project (requires explicit user confirmation).
+5. Update state.json and run `node scripts/task.mjs sync <slug> --role ceo --status "kickoff revision <n>" ...`.
+6. Return a short summary to the user.
+"""

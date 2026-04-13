@@ -45,7 +45,7 @@ if (existsSync(chatPath)) {
 
 const active = state.active_project
   ? `**${state.active_project}** — status: ${state.status ?? "?"}${state.phase ? `, phase: ${state.phase}` : ""}${state.wave ? `, wave: ${state.wave}` : ""}`
-  : "_none_ — run `/idea \"<pitch>\"` to start.";
+  : "_none_ — run `/aos-idea \"<pitch>\"` to start.";
 
 // Per-project surfaces: open tasks per owner + recent sync entries.
 let taskSection = "";

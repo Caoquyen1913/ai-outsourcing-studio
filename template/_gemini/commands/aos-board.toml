@@ -1,0 +1,9 @@
+description = "Show the live AI Outsourcing Studio company board"
+
+prompt = """
+Regenerate and display the live company board.
+
+1. Run `node scripts/update-board.mjs` to refresh .company/BOARD.md from state.json.
+2. Read .company/BOARD.md and print its contents verbatim to the user.
+3. Do nothing else — no analysis, no suggestions. Just show the board.
+"""

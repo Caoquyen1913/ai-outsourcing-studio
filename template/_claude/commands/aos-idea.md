@@ -16,4 +16,4 @@ Your job as the Reception Desk:
    - run both in parallel (not currently supported — inform the user).
 3. If no active project, spawn the CEO subagent via the Task tool with prompt:
    > A new pitch is in `.company/inbox.md`. Read it, run your Phase 1–7 workflow from `.claude/agents/ceo.md`, and hand off to BA when BRIEF.md is ready.
-4. Return a short summary to the user: the pitch was received, CEO is taking over, they'll see discovery questions shortly, and they can check `/board` anytime.
+4. Return a short summary to the user: the pitch was received, CEO is taking over, they'll see discovery questions shortly, and they can check `/aos-board` anytime.

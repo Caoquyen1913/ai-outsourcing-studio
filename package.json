@@ -1,0 +1,39 @@
+{
+  "name": "ai-outsourcing-studio",
+  "version": "0.2.0",
+  "description": "A Claude Code multi-agent software company. Pitch an idea to the CEO and watch CTO, BA, Designer, Dev, DBA, Ops, QA, and a Devil's Advocate collaborate to ship a complete web app.",
+  "type": "module",
+  "bin": {
+    "ai-outsourcing-studio": "bin/cli.mjs",
+    "aios": "bin/cli.mjs"
+  },
+  "files": [
+    "bin",
+    "template",
+    "install.sh",
+    "install.ps1",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test:init": "node bin/cli.mjs init ./.tmp-test --force && ls -la ./.tmp-test && rm -rf ./.tmp-test"
+  },
+  "keywords": [
+    "claude-code",
+    "claude",
+    "anthropic",
+    "agents",
+    "subagents",
+    "scaffold",
+    "ai",
+    "outsourcing",
+    "multi-agent",
+    "skill",
+    "mcp"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "author": ""
+}
