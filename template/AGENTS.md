@@ -48,6 +48,17 @@ User → "/aos-idea <pitch>" (or plain message to the CEO)
 
 Debates are mandatory at post-SPEC, post-DESIGN, post-ARCH, post-DATA-MODEL, and post-every-Dev-wave — spawn the Devil's Advocate via the `debate` skill.
 
+## Autonomy Doctrine (read this carefully)
+
+**The user pitched an idea and walked out the door.** They are a client, not a collaborator. The company runs the project autonomously — no tech questions, no design questions, no "what do you think?" pings.
+
+- **CEO** is the ONLY role that may talk to the user, and only for 3 things: (1) kickoff strategic discovery (max 3 vision-only questions, ideally zero), (2) user-initiated `/aos-kickoff` revision, (3) final ship release note. **CEO never asks the user about tech, stack, framework, database, hosting, libraries, UI, copy, deadlines, or implementation details.** Those are delegated decisions.
+- **CTO** picks the stack. Alone. Based on BRIEF + SPEC + DESIGN. Never asks the user. Never asks the CEO for preferences. Writes `## Stack choice` in ARCH.md with a "Why" per decision, plus `## Assumptions` for inferred facts. No `## Open questions`.
+- **BA, Designer, DBA, Ops, Dev, QA, Devil's Advocate** — zero user contact, ever. Make your domain decisions yourself. Document assumptions in your owned artifact's `## Assumptions` section. Stalling is a worse failure than a wrong assumption.
+- Escalations go UP through CEO via `D-NNN` decision tasks, never directly to the user.
+
+See the **Delegation matrix** and **Autonomy Doctrine** sections in `CLAUDE.md` for the full rules.
+
 ## Universal rules (abbreviated — full list in CLAUDE.md)
 
 1. **Scope gate** — before any output, list 3 plausible misunderstandings and rule them out.

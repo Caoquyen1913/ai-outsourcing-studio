@@ -1,6 +1,6 @@
 {
   "name": "ai-outsourcing-studio",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A Claude Code multi-agent software company. Pitch an idea to the CEO and watch CTO, BA, Designer, Dev, DBA, Ops, QA, and a Devil's Advocate collaborate to ship a complete web app.",
   "type": "module",
   "bin": {
