@@ -1,0 +1,29 @@
+{
+  "active_project": null,
+  "status": "IDLE",
+  "phase": null,
+  "wave": null,
+  "roles": {
+    "aos-ceo":             { "status": "idle", "current": "-", "last_action": null },
+    "aos-cto":             { "status": "idle", "current": "-", "last_action": null },
+    "aos-ba":              { "status": "idle", "current": "-", "last_action": null },
+    "aos-designer":        { "status": "idle", "current": "-", "last_action": null },
+    "aos-dev":             { "status": "idle", "current": "-", "last_action": null },
+    "aos-dba":             { "status": "idle", "current": "-", "last_action": null },
+    "aos-ops":             { "status": "idle", "current": "-", "last_action": null },
+    "aos-qa":              { "status": "idle", "current": "-", "last_action": null },
+    "aos-devils-advocate": { "status": "idle", "current": "-", "last_action": null }
+  },
+  "artifacts": {
+    "BRIEF": false,
+    "SPEC": false,
+    "DESIGN": false,
+    "ARCH": false,
+    "DATA-MODEL": false,
+    "TASKS": false,
+    "TEST-PLAN": false,
+    "RUNBOOK": false,
+    "CODE": false
+  },
+  "history": []
+}

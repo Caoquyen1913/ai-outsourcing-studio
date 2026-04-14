@@ -1,169 +1,148 @@
 # AI Outsourcing Studio
 
-A Claude Code project scaffold that turns a one-line idea into a working web app by simulating a full software outsourcing company — CEO, CTO, BA, Designer, Dev, DBA, Ops, QA, and a Devil's Advocate critic — each as a Claude subagent with its own system prompt, tool allowlist, and role boundaries.
+A Claude Code extension that turns a one-line idea into a working web application by simulating a full software outsourcing company — CEO, CTO, BA, Designer, Dev, DBA, Ops, QA/QC, and a Devil's Advocate critic. Each role is a Claude subagent with its own system prompt, tools, and role boundaries. The company runs autonomously: you pitch once, the roles debate and hand off work among themselves, and you come back to a shipped project.
 
-Inspired by the GSD (`/gsd:*`) workflow, but framed around an outsourcing studio: you pitch the CEO, the company debates, builds, tests, and ships.
+Installs into your global `~/.claude/` directory so the `/aos:*` slash commands are available in any Claude Code session.
 
 ## Install
 
-Three installation methods. Pick whichever matches your stack.
+```bash
+npx ai-outsourcing-studio install
+```
 
-### Option A — curl one-liner (no Node required)
+That's it. Files land in:
 
-Like [get-shit-done](https://github.com/gsd-build/get-shit-done/), download and run a single shell script. Works on macOS, Linux, WSL, and Git Bash on Windows.
+```
+~/.claude/
+├── agents/aos-*.md                 # 9 role subagents
+├── commands/aos/*.md               # /aos:idea, /aos:board, /aos:tasks, ...
+├── skills/aos-*/SKILL.md           # debate, handoff, sync, deliverable-scaffold
+├── ai-outsourcing-studio/          # scripts, references, seeds (the "library" folder)
+│   ├── scripts/*.mjs               # task.mjs, update-board.mjs, log-chat.mjs
+│   ├── references/                 # canonical CLAUDE.md, AGENTS.md, GEMINI.md
+│   ├── templates/company-seed/     # seed for new .company/ directories
+│   └── VERSION
+├── aos-file-manifest.json          # manifest for clean uninstall
+└── settings.json                   # merged with your existing hooks (non-destructive)
+```
+
+Your existing hooks, agents, skills, and other extensions are **not** touched — the installer merges into `settings.json` by appending tagged entries.
+
+### Alternative installers
+
+For users without `npx` / Node on the path (cloned repo, CI, etc.):
 
 ```bash
-# Install into the current directory
+# macOS / Linux / WSL / Git Bash
 curl -fsSL https://raw.githubusercontent.com/yourname/ai-outsourcing-studio/main/install.sh | bash
 
-# Install into a specific directory
-curl -fsSL https://raw.githubusercontent.com/yourname/ai-outsourcing-studio/main/install.sh | bash -s -- ./my-startup
-
-# Force-overwrite
-curl -fsSL https://raw.githubusercontent.com/yourname/ai-outsourcing-studio/main/install.sh | bash -s -- ./my-startup --force
-```
-
-Pin to a specific tag or commit:
-
-```bash
-AOS_REF=v0.1.0 bash <(curl -fsSL https://raw.githubusercontent.com/yourname/ai-outsourcing-studio/main/install.sh)
-```
-
-### Option B — PowerShell one-liner (Windows native)
-
-```powershell
-# Install into the current directory
+# Windows PowerShell
 irm https://raw.githubusercontent.com/yourname/ai-outsourcing-studio/main/install.ps1 | iex
-
-# Install into a specific directory (with optional Force)
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/yourname/ai-outsourcing-studio/main/install.ps1))) -Target ./my-startup -Force
 ```
 
-Requires Windows 10+ (ships with `tar.exe`).
+Both wrappers shell out to `npx ai-outsourcing-studio install` under the hood.
 
-### Option C — npx (if you have Node ≥ 18)
-
-```bash
-# Current directory
-npx ai-outsourcing-studio init
-
-# Specific directory
-npx ai-outsourcing-studio init ./my-startup
-
-# Force overwrite
-npx ai-outsourcing-studio init ./my-startup --force
-```
-
-Or install globally and use the `aios` short alias:
+### Global install via npm
 
 ```bash
 npm install -g ai-outsourcing-studio
-aios init ./my-startup
+ai-outsourcing-studio install
+# or the short alias:
+aos install
 ```
-
-> **Note for repo maintainer:** before publishing, replace `yourname/ai-outsourcing-studio` in this README and in the two `install.*` scripts with your actual GitHub `owner/repo` path.
-
-## Works with
-
-The studio is designed tool-agnostic. A single install drops config for four agentic tools so you can use whichever you prefer:
-
-| Tool | Picks up from | Integration depth |
-|------|---------------|-------------------|
-| **Claude Code** (primary) | `CLAUDE.md` + `.claude/` (agents, skills, commands, settings, hooks) | **Native.** Parallel subagents, hooks, slash commands, auto-board, auto-chatlog. |
-| **Google Antigravity IDE** | `AGENTS.md` at repo root | **Native.** Antigravity reads `AGENTS.md` automatically. Its parallel multi-agent runtime maps onto the pipeline where allowed (e.g. DBA + Ops after ARCH). |
-| **Google Gemini CLI** | `GEMINI.md` + `.gemini/commands/*.toml` | **Commands + charter.** Same `/aos-*` slash commands, but executes the pipeline sequentially within a turn (no true parallel subagents). |
-| **Cursor** | `.cursor/rules/ai-outsourcing-studio.mdc` + `AGENTS.md` | **Always-on rule.** No slash commands — use natural language in Composer ("act as CEO on this pitch…"). |
-
-All four share the same shell-level primitives:
-- `scripts/task.mjs` (tasks, bugs, sync log)
-- `scripts/update-board.mjs` (board renderer)
-- `.company/` (state, board, chatlog, inbox, per-project artifacts)
-- `.claude/agents/` (role prompts — readable by any agentic tool)
-
-This means: a `B-NNN` bug filed by QA in Claude Code is visible to a Cursor Composer turn or a Gemini CLI session in the same repo, because the task board is just files on disk.
 
 ## Use
 
+Open any folder in Claude Code (this is the project the studio will work on):
+
 ```bash
-cd my-startup
-claude           # or: gemini, or open in Cursor / Antigravity
+cd my-new-app
+claude
 ```
 
-On session start, the live company **Board** prints automatically. Then:
+Pitch the CEO:
 
 ```
-/aos-idea "a tiny todo list web app with Google auth"
+/aos:idea "a tiny todo list web app with Google auth"
 ```
 
-The CEO subagent takes over, asks 3–6 discovery questions, writes `BRIEF.md` with **Win Conditions**, and hands off down the pipeline:
+The CEO role starts in **autonomous mode**. It will ask at most 3 strategic vision questions — often zero — and then immediately hand off down the pipeline:
 
 ```
 CEO → BA → Designer → CTO → DBA + Ops → Dev → QA → (bug loop) → Ops → CEO sign-off
 ```
 
+**The CEO will not ask you about tech, stack, framework, database, hosting, libraries, UI, copy, deadlines, or budget.** Those are delegated. CTO picks the stack. Designer picks tokens, layout, and copy. DBA designs the schema. Ops writes the runbook. QA files every defect as a bug task and re-verifies fixes in a loop until zero bugs remain.
+
 Watch progress at any time:
 
 | Command | What it shows |
 |---------|---------------|
-| `/aos-board` | Live dashboard: roles, open tasks, recent sync, artifacts |
-| `/aos-tasks` | Full task board + recent sync log |
-| `/aos-standup` | One-line status from every role |
-| `/aos-kickoff` | Re-trigger CEO discovery on the active project |
-| `/aos-ship` | Final Ops + QA + CEO sign-off (blocks if any open bugs) |
+| `/aos:board` | Live dashboard — roles, open tasks, recent sync, artifacts |
+| `/aos:tasks` | Full task board + recent sync log |
+| `/aos:standup` | One-line status from every role |
+| `/aos:kickoff` | Re-trigger CEO discovery to revise scope mid-project |
+| `/aos:ship` | Final Ops + QA + CEO sign-off (blocks if any open bugs) |
 
-Your generated app lands in `deliverables/<project-slug>/`.
-
-## What you get
-
-After `init`, your directory contains:
+Per-project state lands in the folder where you ran the command:
 
 ```
-CLAUDE.md                  # company charter, role map, doctrines
-.mcp.json                  # MCP server config (empty placeholder)
-.gitignore
-README.md                  # studio operator guide
-.claude/
-  agents/                  # 9 role subagents (CEO, CTO, BA, Designer, Dev, DBA, Ops, QA, Devil's Advocate)
-  skills/                  # debate, handoff, deliverable-scaffold, sync
-  commands/                # /aos-idea /aos-board /aos-tasks /aos-standup /aos-kickoff /aos-ship
-  settings.json            # hooks for live board + chatlog + sync
-.company/
-  BOARD.md                 # live dashboard (hook-maintained)
-  CHATLOG.md               # inter-agent spawn log
-  state.json               # machine-readable state
-  inbox.md                 # raw pitches drop here
-  projects/<slug>/         # per-project artifacts (created on /aos-idea)
-scripts/
-  update-board.mjs         # board renderer (hook + manual)
-  log-chat.mjs             # chatlog appender (hook)
-  task.mjs                 # task system + sync log CLI
-deliverables/              # generated web apps land here
+my-new-app/
+├── .company/              # BOARD.md, CHATLOG.md, state.json, per-project artifacts
+│   └── projects/<slug>/   # BRIEF.md, SPEC.md, DESIGN.md, ARCH.md, TASKS.md, ...
+└── deliverables/<slug>/   # the actual generated web app
 ```
 
-## Doctrines baked in
+Multiple projects in different folders each keep their own `.company/` — the global install only ships framework code.
 
-- **Win Condition Doctrine** — every project is treated as company-survival. CEO writes 3–5 stricter-than-AC win conditions; ship-time sign-off requires evidence each is met.
-- **Bug Loop** — every defect QA finds becomes a `B-NNN` task with an owner, refs, and a re-verify loop. No wave is approved with any open or in_review bug.
-- **Sync Loop** — every role appends a one-line status entry at the end of every turn and reads the tail at the start, so no role acts on a stale picture.
-- **Responsibility & Accountability** — own outcomes not tasks; quality > speed; silence is complicity; push back hard then commit.
-- **Mandatory debates** — at every checkpoint (post-SPEC, post-DESIGN, post-ARCH, post-DATA-MODEL, after each Dev wave) the owning role spawns the Devil's Advocate via the `debate` skill and writes the result to `REVIEWS/`.
+## Core doctrines
 
-Read the installed `CLAUDE.md` for the full charter.
+Every role reads these on every turn. Full text is in `~/.claude/ai-outsourcing-studio/references/CLAUDE.md`.
+
+- **Autonomy Doctrine** — The user pitched and walked out the door. They are a client, not a collaborator. CEO is the only role that may speak to the user, and only for 3 strategic vision questions at kickoff (ideally zero), a user-initiated `/aos:kickoff` revision, or the final release note. Every other role runs silent.
+- **Delegation Matrix** — CEO decides vision + scope + win conditions. CTO decides tech stack + architecture. Designer decides UI + tokens + copy. DBA decides data model. Ops decides CI + deploy. Dev decides implementation details. QA decides test strategy. No one asks upward for permission to do their own job.
+- **Win Condition Doctrine** — Every project is treated as company-survival. CEO writes 3–5 observable, stricter-than-AC win conditions in BRIEF.md. Ship-time sign-off requires documented evidence each is met.
+- **Bug Loop** — Every defect QA finds becomes a `B-NNN` task with an owner, file:line refs, and a re-verify loop. No wave is approved with any open or in_review bug. Dev reproduces before fixing, addresses root cause not symptom, and marks in_review; QA re-runs the exact failing test plus full regression, loop until zero.
+- **Sync Loop** — Every role appends a one-line status entry at the end of every turn (`task.mjs sync ...`) and reads the tail at the start, so no role acts on a stale picture.
+- **Responsibility & Accountability** — Own outcomes, not tasks. Quality > speed. Silence is complicity. Push back hard via the `aos-debate` skill, then commit fully.
+- **Mandatory debates** — At post-SPEC, post-DESIGN, post-ARCH, post-DATA-MODEL, and after each Dev wave, the owning role spawns the Devil's Advocate via the `aos-debate` skill and writes the result to `REVIEWS/`.
+
+## Update / uninstall
+
+```bash
+# Update to the newest version (overwrites framework files, leaves your projects alone)
+npx ai-outsourcing-studio update
+
+# Remove everything this installer put in ~/.claude/ (manifest-driven)
+npx ai-outsourcing-studio uninstall
+```
+
+Uninstall reads `~/.claude/aos-file-manifest.json` and removes exactly the files it installed, plus its tagged entries in `settings.json`. Your other hooks, agents, skills, and extensions are untouched.
+
+## Multi-tool notes
+
+The studio ships canonical `AGENTS.md`, `GEMINI.md`, and a Cursor rule in `~/.claude/ai-outsourcing-studio/references/`. If you want to use the same project with another agentic tool (Antigravity, Gemini CLI, Cursor), copy the relevant file to your project root manually — e.g. `cp ~/.claude/ai-outsourcing-studio/references/AGENTS.md .` — so that tool picks it up. Native `/aos:*` slash commands and subagents are Claude Code only; other tools drive the pipeline by loading role prompts from `~/.claude/agents/aos-*.md` via file includes.
 
 ## Requirements
 
-- Node.js ≥ 18 (for the CLI installer and the studio's hook scripts)
+- Node.js ≥ 18 (for the installer and the studio's scripts)
 - [Claude Code](https://claude.com/claude-code) installed and authenticated
 
-## Local development of this package
+## Local development
 
 ```bash
 git clone <this repo>
 cd ai-outsourcing-studio
-node bin/cli.mjs init ../some-test-dir
+
+# Test-install into a sandbox (does NOT touch real ~/.claude/)
+AOS_CLAUDE_HOME="$(pwd)/.tmp-home/.claude" node bin/cli.mjs install
+find .tmp-home/.claude -type f
+
+# Test uninstall
+AOS_CLAUDE_HOME="$(pwd)/.tmp-home/.claude" node bin/cli.mjs uninstall
 ```
 
-Or `npm link` then `npx ai-outsourcing-studio init` from anywhere.
+`AOS_CLAUDE_HOME` is an escape hatch for testing — do not set it in normal use.
 
 ## License
 
