@@ -6,7 +6,7 @@
   "roles": {
     "aos-ceo":             { "status": "idle", "current": "-", "last_action": null },
     "aos-cto":             { "status": "idle", "current": "-", "last_action": null },
-    "aos-ba":              { "status": "idle", "current": "-", "last_action": null },
+    "aos-po":              { "status": "idle", "current": "-", "last_action": null },
     "aos-designer":        { "status": "idle", "current": "-", "last_action": null },
     "aos-dev":             { "status": "idle", "current": "-", "last_action": null },
     "aos-dba":             { "status": "idle", "current": "-", "last_action": null },

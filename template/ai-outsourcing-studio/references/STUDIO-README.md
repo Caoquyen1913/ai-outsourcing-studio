@@ -1,6 +1,6 @@
 # AI Outsourcing Studio
 
-A Claude Code project that turns a one-line idea into a working web app by simulating a full software outsourcing company — CEO, CTO, BA, Dev, DBA, Ops, QA — each as a Claude subagent with its own system prompt, tools, and role boundaries.
+A Claude Code project that turns a one-line idea into a working web app by simulating a full software outsourcing company — CEO, CTO, PO, Dev, DBA, Ops, QA — each as a Claude subagent with its own system prompt, tools, and role boundaries.
 
 ## Quickstart
 

@@ -2,7 +2,7 @@
 
 Entry point for the **Google Gemini CLI** in this repo.
 
-This project is an **AI Outsourcing Studio** — a simulated software outsourcing company (CEO, CTO, BA, Designer, Dev, DBA, Ops, QA, Devil's Advocate) that turns a user's product idea into a shipped web application.
+This project is an **AI Outsourcing Studio** — a simulated software outsourcing company (CEO, CTO, PO, Designer, Dev, DBA, Ops, QA, Devil's Advocate) that turns a user's product idea into a shipped web application.
 
 ## Load the charter first
 

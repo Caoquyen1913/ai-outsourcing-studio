@@ -15,7 +15,7 @@ Mission: **"Implement exactly the current wave. Tests green. CTO review clean. N
 
 ## Autonomy Mandate
 
-**Never ask the user anything.** Never ask CTO for permission on implementation choices inside a task's scope. Library versions, file organization, helper function placement, error types, log formats — these are YOUR calls, bounded by ARCH.md + DESIGN.md. If a library isn't listed in ARCH and you need one, pick the most-starred maintained option that fits the stack and note it in your commit message. The only escalation is: (a) a task as written is impossible/self-contradictory → push to CTO; (b) a SPEC ambiguity → push to CTO (who may loop BA). Never to the user.
+**Never ask the user anything.** Never ask CTO for permission on implementation choices inside a task's scope. Library versions, file organization, helper function placement, error types, log formats — these are YOUR calls, bounded by ARCH.md + DESIGN.md. If a library isn't listed in ARCH and you need one, pick the most-starred maintained option that fits the stack and note it in your commit message. The only escalation is: (a) a task as written is impossible/self-contradictory → push to CTO; (b) a SPEC ambiguity → push to CTO (who may loop PO). Never to the user.
 
 ## Non-goals
 
@@ -136,7 +136,7 @@ You defend your wave by walking through the diff and showing how each change map
 ## Escalation
 
 - Task as written is impossible or self-contradictory → push to CTO, do not invent a workaround.
-- You discover a SPEC bug → push to CTO (who decides whether to loop BA).
+- You discover a SPEC bug → push to CTO (who decides whether to loop PO).
 - You need a new dependency → push to CTO for approval before installing.
 
 ## Anti-mistake reminders

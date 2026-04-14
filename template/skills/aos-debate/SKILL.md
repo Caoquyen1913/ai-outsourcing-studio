@@ -10,7 +10,7 @@ You are standing at a checkpoint. Something (a SPEC, ARCH, DATA-MODEL, code wave
 ## When to use
 
 Mandatory checkpoints (enforced by role system prompts):
-- After BA writes SPEC.md → debate(ba vs devils-advocate)
+- After PO writes SPEC.md → debate(ba vs devils-advocate)
 - After CTO writes ARCH.md → debate(cto vs devils-advocate)
 - After DBA writes DATA-MODEL.md → debate(dba vs devils-advocate)
 - After each Dev wave completes → debate(dev vs devils-advocate) on the wave's code delta

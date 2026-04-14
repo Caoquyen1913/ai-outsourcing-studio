@@ -18,9 +18,9 @@ const state = JSON.parse(readFileSync(statePath, "utf8"));
 
 const now = new Date().toISOString().replace("T", " ").slice(0, 19);
 
-const roleOrder = ["aos-ceo", "aos-cto", "aos-ba", "aos-designer", "aos-dev", "aos-dba", "aos-ops", "aos-qa", "aos-devils-advocate"];
+const roleOrder = ["aos-ceo", "aos-cto", "aos-po", "aos-designer", "aos-dev", "aos-dba", "aos-ops", "aos-qa", "aos-devils-advocate"];
 const roleLabel = {
-  "aos-ceo": "CEO", "aos-cto": "CTO", "aos-ba": "BA", "aos-designer": "Designer", "aos-dev": "Dev",
+  "aos-ceo": "CEO", "aos-cto": "CTO", "aos-po": "PO", "aos-designer": "Designer", "aos-dev": "Dev",
   "aos-dba": "DBA", "aos-ops": "Ops", "aos-qa": "QA", "aos-devils-advocate": "Devil's Advocate",
 };
 

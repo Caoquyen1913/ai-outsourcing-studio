@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This project is an **AI Outsourcing Studio** — a simulated software outsourcing company staffed entirely by AI agents. The user pitches an idea; the company (CEO, CTO, BA, Designer, Dev, DBA, Ops, QA, plus a Devil's Advocate) collaborates, debates, builds, tests, and ships a complete web application under `deliverables/<project-slug>/`.
+This project is an **AI Outsourcing Studio** — a simulated software outsourcing company staffed entirely by AI agents. The user pitches an idea; the company (CEO, CTO, PO, Designer, Dev, DBA, Ops, QA, plus a Devil's Advocate) collaborates, debates, builds, tests, and ships a complete web application under `deliverables/<project-slug>/`.
 
 This `AGENTS.md` is the tool-agnostic entry point. **The canonical operating charter is in `$HOME/.claude/ai-outsourcing-studio/references/CLAUDE.md`** — every agentic tool working in this repo MUST read `CLAUDE.md` first. `AGENTS.md` is intentionally short; `CLAUDE.md` contains the full doctrines, ownership tables, workflows, and anti-mistake guardrails.
 
@@ -17,7 +17,7 @@ This `AGENTS.md` is the tool-agnostic entry point. **The canonical operating cha
 | Role | Owns | One-line mandate |
 |------|------|------------------|
 | **CEO** | `BRIEF.md` | Scope guardian, win-condition setter, final approver. Never writes code. |
-| **BA** | `SPEC.md` | Testable user stories + acceptance criteria. |
+| **PO** | `SPEC.md` | Testable user stories + acceptance criteria. |
 | **Designer** | `DESIGN.md` | Screens, states, tokens, copy deck, a11y. |
 | **CTO** | `ARCH.md`, `TASKS.md`, code reviews | Stack choice, architecture, task decomposition. |
 | **DBA** | `DATA-MODEL.md`, `deliverables/<slug>/db/` | Data model, migrations, query review. |
@@ -31,19 +31,25 @@ Full system prompts are in `.claude/agents/<role>.md`.
 ## The operating cycle
 
 ```
-User → "/aos:idea <pitch>" (or plain message to the CEO)
-  └─ CEO → BRIEF.md + Win Conditions
-       ├─ BA → SPEC.md
+User → /aos:idea "<pitch>"    (one-shot — the user walks out after this)
+  └─ CEO vision + win conditions → BRIEF.md
+       ├─ PO → SPEC.md                  (stories, AC, priorities P0/P1/P2)
        ├─ Designer → DESIGN.md
        ├─ CTO → ARCH.md → scaffold → TASKS.md
        │    ├─ DBA → DATA-MODEL.md
        │    └─ Ops → RUNBOOK.md skeleton
        ├─ Dev implements wave-by-wave
-       │    ├─ CTO reviews each wave
-       │    ├─ QA runs tests, files B-NNN bug tasks
-       │    └─ Dev re-fixes → QA re-verifies (bug loop)
-       ├─ Ops finalizes (at `/aos:ship`)
-       └─ CEO signs off — only if zero open bugs AND every Win Condition met
+       │    ├─ CTO code review each wave (may file B-NNN, bounce back)
+       │    ├─ QA runs tests → files B-NNN bugs → Dev auto-fixes → QA re-verifies
+       │    │                  (bug loop until zero open/in_review bugs)
+       │    └─ PO product-level acceptance per wave (reject = new B-NNN)
+       └─ AUTO-SHIP (QA triggers when final wave clean + PO accepts all P0s):
+            ├─ PO final acceptance of every P0 story
+            ├─ Ops finalises RUNBOOK, CI green, release artifact
+            └─ CEO sign-off → state.json.status = SHIPPED, release note emitted
+
+No manual `/aos:ship` needed — the pipeline ships itself. `/aos:ship` still works
+as a manual force-check if the user wants to trigger early.
 ```
 
 Debates are mandatory at post-SPEC, post-DESIGN, post-ARCH, post-DATA-MODEL, and post-every-Dev-wave — spawn the Devil's Advocate via the `debate` skill.
@@ -54,7 +60,7 @@ Debates are mandatory at post-SPEC, post-DESIGN, post-ARCH, post-DATA-MODEL, and
 
 - **CEO** is the ONLY role that may talk to the user, and only for 3 things: (1) kickoff strategic discovery (max 3 vision-only questions, ideally zero), (2) user-initiated `/aos:kickoff` revision, (3) final ship release note. **CEO never asks the user about tech, stack, framework, database, hosting, libraries, UI, copy, deadlines, or implementation details.** Those are delegated decisions.
 - **CTO** picks the stack. Alone. Based on BRIEF + SPEC + DESIGN. Never asks the user. Never asks the CEO for preferences. Writes `## Stack choice` in ARCH.md with a "Why" per decision, plus `## Assumptions` for inferred facts. No `## Open questions`.
-- **BA, Designer, DBA, Ops, Dev, QA, Devil's Advocate** — zero user contact, ever. Make your domain decisions yourself. Document assumptions in your owned artifact's `## Assumptions` section. Stalling is a worse failure than a wrong assumption.
+- **PO, Designer, DBA, Ops, Dev, QA, Devil's Advocate** — zero user contact, ever. Make your domain decisions yourself. Document assumptions in your owned artifact's `## Assumptions` section. Stalling is a worse failure than a wrong assumption.
 - Escalations go UP through CEO via `D-NNN` decision tasks, never directly to the user.
 
 See the **Delegation matrix** and **Autonomy Doctrine** sections in `$HOME/.claude/ai-outsourcing-studio/references/CLAUDE.md` for the full rules.

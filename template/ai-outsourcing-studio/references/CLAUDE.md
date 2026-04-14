@@ -4,27 +4,38 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-**AI Outsourcing Studio** — a Claude Code project that simulates a software outsourcing company staffed entirely by Claude subagents. The user gives an idea (a "pitch") to the CEO via `/aos:idea "<pitch>"`, and the company — CEO, CTO, BA, Designer, Dev, DBA, Ops, QA/QC, plus a Devil's Advocate critic — collaborates to produce a complete web application under `deliverables/<project-slug>/`.
+**AI Outsourcing Studio** — a Claude Code project that simulates a software outsourcing company staffed entirely by Claude subagents. The user gives an idea (a "pitch") to the CEO via `/aos:idea "<pitch>"`, and the company — CEO, CTO, PO, Designer, Dev, DBA, Ops, QA/QC, plus a Devil's Advocate critic — collaborates to produce a complete web application under `deliverables/<project-slug>/`.
 
 The main Claude session is the **Reception Desk**: its only job is to route user input to the CEO and relay the company's output back. All real work happens inside subagents.
 
 ## The operating cycle
 
 ```
-User → /aos:idea "<pitch>"
-  └─ CEO discovers scope (asks user questions) → writes BRIEF.md
-       ├─ BA       → SPEC.md    (user stories, acceptance criteria)
-       ├─ Designer → DESIGN.md  (screens, states, tokens, copy, a11y)
-       ├─ CTO      → ARCH.md    (stack choice, architecture)
+User → /aos:idea "<pitch>"   (one-shot — the user walks out after this)
+  └─ CEO vision + win conditions → writes BRIEF.md
+       ├─ PO        → SPEC.md        (user stories, AC, priority P0/P1/P2, backlog)
+       ├─ Designer  → DESIGN.md      (screens, states, tokens, copy, a11y)
+       ├─ CTO       → ARCH.md        (stack choice, architecture)
        │    ├─ DBA             → DATA-MODEL.md
        │    ├─ Ops             → RUNBOOK.md skeleton
        │    └─ Devil's Advocate → critiques every major artifact
-       ├─ CTO decomposes       → TASKS.md
+       ├─ CTO decomposes       → TASKS.md  (wave-based)
        ├─ Dev implements wave-by-wave in deliverables/<slug>/
-       │    └─ QA runs after each wave, files REVIEWS/qa-*.md
-       ├─ CTO code review      → REVIEWS/cto-*.md  (can reject)
-       ├─ Ops packages         → final RUNBOOK.md
-       └─ CEO final sign-off   → status=SHIPPED
+       │    ├─ CTO code review → REVIEWS/cto-*.md (may file B-NNN bugs, bounce back)
+       │    ├─ QA runs tests → files B-NNN bugs → Dev auto-fixes → QA re-verifies
+       │    │                  (bug loop until zero open or in_review bugs)
+       │    └─ PO product-level acceptance of each wave (reject = new B-NNN)
+       │
+       └─ AUTO-SHIP (triggered by QA when final wave clears + all P0s accepted):
+            ├─ PO final acceptance of every P0 story in SPEC.md
+            ├─ Ops finalises RUNBOOK.md, CI green, release artifact built
+            ├─ Ops debate with Devil's Advocate
+            └─ CEO sign-off → writes REVIEWS/ceo-ship.md with per-Win-Condition evidence
+                             → flips state.json.status = SHIPPED
+                             → emits release note
+
+No manual `/aos:ship` required — the pipeline ships itself once quality gates pass.
+`/aos:ship` still works as a manual force-check if the user wants to trigger it early.
 ```
 
 Each artifact is a durable file in `.company/projects/<slug>/`. Each agent reads its inputs from there and writes its outputs there. Agents also "talk" to each other via the Task tool (spawning a peer with a prompt), and every spawn is logged to `.company/CHATLOG.md` by a hook.
@@ -36,7 +47,7 @@ Each artifact is a durable file in `.company/projects/<slug>/`. Each agent reads
 | Path                                       | Owner        | Notes |
 |--------------------------------------------|--------------|-------|
 | `.company/projects/<slug>/BRIEF.md`        | CEO          | Scope, constraints, success criteria |
-| `.company/projects/<slug>/SPEC.md`         | BA           | User stories + acceptance criteria |
+| `.company/projects/<slug>/SPEC.md`         | PO           | User stories + acceptance criteria |
 | `.company/projects/<slug>/DESIGN.md`       | Designer     | Screens, states, tokens, copy deck, a11y rules |
 | `.company/projects/<slug>/ARCH.md`         | CTO          | Stack, architecture, non-functional reqs |
 | `.company/projects/<slug>/TASKS.md`        | CTO          | Wave-based task breakdown |
@@ -58,7 +69,7 @@ The `.company/inbox.md` file is where `/aos:idea` drops raw user pitches; CEO re
 |-----------------|--------|---------------------|
 | CEO             | opus   | Scope guardian, final approver, user-facing negotiator. Never writes code. |
 | CTO             | opus   | Picks stack, writes architecture, decomposes tasks, code reviews. |
-| BA              | sonnet | Turns pitch into testable user stories + acceptance criteria. |
+| PO              | sonnet | Turns pitch into testable user stories + acceptance criteria. |
 | Designer        | sonnet | Turns SPEC into screens, states, tokens, copy deck, and a11y rules. |
 | Dev             | sonnet | Implements TASKS.md in `deliverables/<slug>/`. |
 | DBA             | sonnet | Data model, migrations, query review. Challenges ARCH.md when needed. |
@@ -102,7 +113,7 @@ This is the single most important rule in the studio. Violating it — pestering
 | Role | MAY ask user about | MAY NOT ask user about |
 |------|---------------------|-------------------------|
 | **CEO** | Target persona, core problem, "what does winning look like", hard non-negotiables (brand, compliance) — **max 3 strategic questions at kickoff, zero after** | Tech stack, framework, hosting, libraries, database, auth provider, design, layout, colors, copy, tests, deadlines, integrations, implementation details |
-| BA, Designer, CTO, DBA, Ops, Dev, QA, Devil's Advocate | **Nothing.** Zero user questions. Ever. | Anything |
+| PO, Designer, CTO, DBA, Ops, Dev, QA, Devil's Advocate | **Nothing.** Zero user questions. Ever. | Anything |
 
 The user has ONE interface with the company: CEO at kickoff, CEO at a user-initiated `/aos:kickoff`, and CEO at ship time. That's it. No other role ever speaks to the user.
 
@@ -111,7 +122,7 @@ The user has ONE interface with the company: CEO at kickoff, CEO at a user-initi
 | Decision type | Owned by |
 |---|---|
 | Product vision, scope, win conditions | **CEO** (asks user at kickoff only if genuinely ambiguous) |
-| User stories, acceptance criteria, edge cases | **BA** (no user input) |
+| User stories, acceptance criteria, edge cases | **PO** (no user input) |
 | UI screens, states, tokens, copy deck, a11y | **Designer** (no user input) |
 | **Tech stack, framework, language, database, hosting, auth provider** | **CTO** (no user input, no CEO input — BRIEF.md is intentionally tech-agnostic) |
 | Data model, indexes, migrations, query patterns | **DBA** |

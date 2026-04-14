@@ -10,8 +10,8 @@ Standard way to pass the baton from one role to the next. Keeps the pipeline det
 ## When to use
 
 At the end of your turn, after your Definition of Done checklist is green and your artifact is written. Examples:
-- CEO → BA (BRIEF.md → SPEC.md)
-- BA → CTO (SPEC.md → ARCH.md)
+- CEO → PO (BRIEF.md → SPEC.md)
+- PO → CTO (SPEC.md → ARCH.md)
 - CTO → DBA (ARCH.md → DATA-MODEL.md)
 - CTO → Dev (TASKS.md → code)
 - Dev → QA (deliverable code → TEST-PLAN execution)
