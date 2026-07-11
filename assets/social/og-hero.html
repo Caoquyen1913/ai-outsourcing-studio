@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>og hero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    font-family: "Inter", system-ui, sans-serif; color: #ECEAF6;
+    background:
+      radial-gradient(900px 620px at 88% 10%, rgba(139,92,246,.32), transparent 60%),
+      radial-gradient(760px 520px at 6% 100%, rgba(37,99,235,.26), transparent 55%),
+      linear-gradient(135deg, #0B0A14 0%, #151230 100%);
+    position: relative;
+  }
+  .grid-lines {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size: 46px 46px; mask-image: radial-gradient(circle at 70% 40%, black, transparent 75%);
+  }
+  .stage { position: relative; height: 100%; display: flex; align-items: center; gap: 56px; padding: 0 76px; }
+  .logo { flex: none; filter: drop-shadow(0 24px 50px rgba(79,70,229,.5)); }
+  .logo svg { width: 250px; height: 250px; display: block; }
+  .copy { max-width: 640px; }
+  .kicker {
+    font-family: "JetBrains Mono", monospace; font-size: 15px; letter-spacing: .22em;
+    text-transform: uppercase; color: #A78BFA; margin-bottom: 20px;
+  }
+  h1 { font-size: 62px; line-height: 1.04; font-weight: 800; letter-spacing: -.025em; }
+  h1 .accent { background: linear-gradient(90deg, #A78BFA, #60A5FA); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .sub { margin-top: 20px; font-size: 24px; line-height: 1.4; color: #C3BEDA; font-weight: 400; }
+  .chips { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 26px; }
+  .chip {
+    font-family: "JetBrains Mono", monospace; font-size: 14px; font-weight: 500;
+    padding: 7px 14px; border-radius: 999px; color: #DDD6FE;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+  }
+  .install {
+    position: absolute; left: 76px; bottom: 40px;
+    font-family: "JetBrains Mono", monospace; font-size: 18px; color: #8B85B0;
+  }
+  .install .sig { color: #34D399; }
+  .install .pkg { color: #ECEAF6; }
+  .badge {
+    position: absolute; right: 76px; bottom: 40px;
+    font-family: "JetBrains Mono", monospace; font-size: 15px; color: #A29DB8;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .badge .m { color: #6366F1; font-size: 20px; }
+</style>
+</head>
+<body>
+  <div class="grid-lines"></div>
+  <div class="stage">
+    <div class="logo">
+      <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6D28D9"/><stop offset=".55" stop-color="#4F46E5"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+        <rect x="16" y="16" width="480" height="480" rx="108" fill="url(#lg)"/>
+        <g stroke="#fff" stroke-opacity=".42" stroke-width="7" stroke-linecap="round"><line x1="256" y1="256" x2="256" y2="120"/><line x1="256" y1="256" x2="374" y2="188"/><line x1="256" y1="256" x2="374" y2="324"/><line x1="256" y1="256" x2="256" y2="392"/><line x1="256" y1="256" x2="138" y2="324"/><line x1="256" y1="256" x2="138" y2="188"/></g>
+        <circle cx="256" cy="256" r="46" fill="#fff"/>
+        <g fill="#EEF2FF"><circle cx="256" cy="120" r="26"/><circle cx="374" cy="188" r="26"/><circle cx="374" cy="324" r="26"/><circle cx="256" cy="392" r="26"/><circle cx="138" cy="324" r="26"/><circle cx="138" cy="188" r="26"/></g>
+      </svg>
+    </div>
+    <div class="copy">
+      <div class="kicker">AI Outsourcing Studio</div>
+      <h1>Pitch one idea.<br>Ship a <span class="accent">whole app.</span></h1>
+      <p class="sub">A full AI software company — CEO, CTO, Designer, Dev, QA — builds it autonomously while you watch.</p>
+      <div class="chips">
+        <span class="chip">CEO</span><span class="chip">CTO</span><span class="chip">Designer</span><span class="chip">Dev</span><span class="chip">DBA</span><span class="chip">Ops</span><span class="chip">QA</span><span class="chip">Devil's Advocate</span>
+      </div>
+    </div>
+  </div>
+  <div class="install"><span class="sig">$</span> npx <span class="pkg">ai-outsourcing-studio</span> install</div>
+  <div class="badge"><span class="m">✦</span> built for Claude Code</div>
+</body>
+</html>

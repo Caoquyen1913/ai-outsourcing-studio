@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>square post</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1080px; overflow: hidden; }
+  body {
+    font-family: "Inter", system-ui, sans-serif; color: #ECEAF6;
+    background:
+      radial-gradient(760px 620px at 85% 8%, rgba(139,92,246,.34), transparent 60%),
+      radial-gradient(680px 560px at 8% 96%, rgba(37,99,235,.28), transparent 55%),
+      linear-gradient(150deg, #0B0A14 0%, #171334 100%);
+    position: relative; padding: 84px;
+    display: flex; flex-direction: column;
+  }
+  .grid-lines {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size: 54px 54px; mask-image: radial-gradient(circle at 50% 30%, black, transparent 78%);
+  }
+  .top { position: relative; display: flex; align-items: center; gap: 22px; }
+  .top svg { width: 92px; height: 92px; display: block; filter: drop-shadow(0 14px 30px rgba(79,70,229,.5)); }
+  .top .name { font-size: 30px; font-weight: 700; letter-spacing: -.01em; }
+  .top .name span { display: block; font-family: "JetBrains Mono", monospace; font-size: 15px; font-weight: 500; letter-spacing: .14em; color: #A78BFA; text-transform: uppercase; margin-top: 4px; }
+
+  .mid { position: relative; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  h1 { font-size: 92px; line-height: 1.02; font-weight: 800; letter-spacing: -.03em; text-wrap: balance; }
+  h1 .accent { background: linear-gradient(90deg, #A78BFA, #60A5FA); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .sub { margin-top: 30px; font-size: 30px; line-height: 1.4; color: #C3BEDA; max-width: 20ch; }
+
+  .flow { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin-top: 48px; font-family: "JetBrains Mono", monospace; font-size: 21px; }
+  .flow .step { color: #DDD6FE; }
+  .flow .arr { color: #6D28D9; font-weight: 700; }
+  .flow .ship { color: #34D399; font-weight: 700; }
+
+  .bottom { position: relative; display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+  .install { font-family: "JetBrains Mono", monospace; font-size: 25px; color: #ECEAF6; padding: 16px 24px; border-radius: 14px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); }
+  .install .sig { color: #34D399; }
+  .install .pkg { color: #C4B5FD; }
+  .cc { font-family: "JetBrains Mono", monospace; font-size: 17px; color: #A29DB8; text-align: right; }
+  .cc .m { color: #6366F1; }
+</style>
+</head>
+<body>
+  <div class="grid-lines"></div>
+
+  <div class="top">
+    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="sq" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6D28D9"/><stop offset=".55" stop-color="#4F46E5"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+      <rect x="16" y="16" width="480" height="480" rx="108" fill="url(#sq)"/>
+      <g stroke="#fff" stroke-opacity=".42" stroke-width="7" stroke-linecap="round"><line x1="256" y1="256" x2="256" y2="120"/><line x1="256" y1="256" x2="374" y2="188"/><line x1="256" y1="256" x2="374" y2="324"/><line x1="256" y1="256" x2="256" y2="392"/><line x1="256" y1="256" x2="138" y2="324"/><line x1="256" y1="256" x2="138" y2="188"/></g>
+      <circle cx="256" cy="256" r="46" fill="#fff"/>
+      <g fill="#EEF2FF"><circle cx="256" cy="120" r="26"/><circle cx="374" cy="188" r="26"/><circle cx="374" cy="324" r="26"/><circle cx="256" cy="392" r="26"/><circle cx="138" cy="324" r="26"/><circle cx="138" cy="188" r="26"/></g>
+    </svg>
+    <div class="name">AI Outsourcing Studio<span>multi-agent dev company</span></div>
+  </div>
+
+  <div class="mid">
+    <h1>One idea in.<br>A <span class="accent">shipped app</span> out.</h1>
+    <p class="sub">Nine AI roles design, build, test &amp; ship it for you.</p>
+    <div class="flow">
+      <span class="step">CEO</span><span class="arr">→</span><span class="step">BA</span><span class="arr">→</span><span class="step">Designer</span><span class="arr">→</span><span class="step">CTO</span><span class="arr">→</span><span class="step">Dev</span><span class="arr">→</span><span class="step">QA</span><span class="arr">→</span><span class="ship">ship ✓</span>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="install"><span class="sig">$</span> npx <span class="pkg">ai-outsourcing-studio</span></div>
+    <div class="cc"><span class="m">✦</span> built for Claude Code<br>npm · github</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>terminal demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    font-family: "Inter", system-ui, sans-serif;
+    background:
+      radial-gradient(1000px 700px at 80% -10%, rgba(139,92,246,.28), transparent 60%),
+      radial-gradient(900px 600px at 0% 110%, rgba(37,99,235,.24), transparent 55%),
+      linear-gradient(135deg, #0B0A14 0%, #14122A 100%);
+    display: grid; place-items: center;
+    color: #ECEAF6;
+  }
+  .term {
+    width: 1020px; border-radius: 18px; overflow: hidden;
+    background: #0E0D1A;
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 40px 90px -30px rgba(0,0,0,.75), 0 0 0 1px rgba(139,92,246,.12);
+  }
+  .bar {
+    height: 46px; display: flex; align-items: center; gap: 8px; padding: 0 18px;
+    background: linear-gradient(#191733, #14122A);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .dot { width: 13px; height: 13px; border-radius: 50%; }
+  .r { background: #FF5F57; } .y { background: #FEBC2E; } .g { background: #28C840; }
+  .bar .title {
+    margin-left: 14px; font-family: "JetBrains Mono", monospace; font-size: 14px;
+    color: #8B85B0; letter-spacing: .01em;
+  }
+  .body { padding: 28px 34px 34px; font-family: "JetBrains Mono", monospace; font-size: 19px; line-height: 1.9; }
+  .prompt { font-size: 21px; margin-bottom: 18px; }
+  .prompt .sig { color: #34D399; font-weight: 700; }
+  .prompt .cmd { color: #C4B5FD; }
+  .prompt .arg { color: #FBBF24; }
+  .row { display: flex; align-items: center; gap: 16px; }
+  .role { display: inline-block; width: 138px; color: #A29DB8; font-weight: 500; }
+  .ok { color: #34D399; font-weight: 700; width: 20px; display: inline-block; }
+  .msg { color: #D8D4EA; }
+  .msg b { color: #fff; font-weight: 600; }
+  .msg .file { color: #818CF8; }
+  .flag { margin-top: 14px; color: #FCA5A5; }
+  .flag .ico { color: #F87171; }
+  .flag .res { color: #34D399; }
+  .ship { margin-top: 16px; color: #34D399; font-weight: 700; font-size: 20px; }
+  .cursor { display:inline-block; width:11px; height:22px; background:#34D399; margin-left:6px; vertical-align:-3px; }
+</style>
+</head>
+<body>
+  <div class="term">
+    <div class="bar">
+      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      <span class="title">ai-outsourcing-studio — claude code</span>
+    </div>
+    <div class="body">
+      <div class="prompt"><span class="sig">$</span> <span class="cmd">/aos:idea</span> <span class="arg">"a todo app with google auth"</span></div>
+      <div class="row"><span class="role">CEO</span><span class="ok">✓</span><span class="msg">scope frozen · <span class="file">BRIEF.md</span></span></div>
+      <div class="row"><span class="role">BA / PO</span><span class="ok">✓</span><span class="msg"><b>7</b> user stories · <b>12</b> acceptance criteria</span></div>
+      <div class="row"><span class="role">Designer</span><span class="ok">✓</span><span class="msg">design tokens · <b>4</b> screens</span></div>
+      <div class="row"><span class="role">CTO</span><span class="ok">✓</span><span class="msg">Next.js + Postgres · <b>3</b> waves</span></div>
+      <div class="row"><span class="role">Dev</span><span class="ok">✓</span><span class="msg">wave <b>3/3</b> committed</span></div>
+      <div class="row"><span class="role">QA / QC</span><span class="ok">✓</span><span class="msg"><b>0</b> bugs · <b>12/12</b> tests green</span></div>
+      <div class="flag"><span class="ico">●</span> Devil's Advocate flagged <b>2</b> risks — <span class="res">resolved</span></div>
+      <div class="ship">✓ shipped → <span class="file" style="color:#818CF8">deliverables/todo-app</span><span class="cursor"></span></div>
+    </div>
+  </div>
+</body>
+</html>
