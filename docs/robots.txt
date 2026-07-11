@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://caoquyen1913.github.io/ai-outsourcing-studio/sitemap.xml

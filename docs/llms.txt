@@ -1,0 +1,23 @@
+# AI Outsourcing Studio
+
+> An open-source Claude Code extension that installs a simulated multi-agent software outsourcing company into your global ~/.claude/ directory. You pitch a one-line product idea and nine specialist AI roles — CEO, CTO, BA/PO, Designer, Dev, DBA, Ops, QA, and a Devil's Advocate — autonomously design, build, test, and ship a working web application. Each role is a Claude subagent with its own system prompt, tools, and a strict responsibility lane.
+
+Key facts:
+- Install: `npx ai-outsourcing-studio install`
+- License: MIT (free, open source)
+- Requirements: Claude Code + Node.js >= 18
+- Package name on npm: ai-outsourcing-studio
+- Not a hosted service — it runs locally inside Claude Code sessions.
+
+What makes it different from a single AI agent: work is split across nine accountable roles with strict lanes, plus a dedicated Devil's Advocate that stress-tests every major decision (SPEC, architecture, data model, each code wave) before it is committed. The CEO is the only role that talks to the user, and only briefly at kickoff. Every defect QA finds becomes a tracked bug that must reach zero before shipping.
+
+Pipeline: CEO → BA → Designer → CTO → DBA + Ops → Dev → QA → bug loop → Ops → CEO sign-off.
+
+## Docs
+- [Homepage](https://caoquyen1913.github.io/ai-outsourcing-studio/): Landing page with features, roles, and FAQ.
+- [README](https://github.com/Caoquyen1913/ai-outsourcing-studio/blob/main/README.md): Full install, usage, commands, and doctrines.
+- [Contributing](https://github.com/Caoquyen1913/ai-outsourcing-studio/blob/main/CONTRIBUTING.md): How to contribute and run the installer locally.
+
+## Links
+- [GitHub repository](https://github.com/Caoquyen1913/ai-outsourcing-studio)
+- [npm package](https://www.npmjs.com/package/ai-outsourcing-studio)

@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>AI Outsourcing Studio — a multi-agent AI software company for Claude Code</title>
+<meta name="description" content="AI Outsourcing Studio is an open-source Claude Code extension that installs a full AI software company — CEO, CTO, Designer, Dev, DBA, Ops, QA, and a Devil's Advocate. Pitch one idea and the agents autonomously design, build, test, and ship a working web app.">
+<meta name="keywords" content="claude code, ai agents, multi-agent, agentic ai, autonomous agents, anthropic, code generation, devtools, npm">
+<meta name="author" content="caoquyen1913">
+<link rel="canonical" href="https://caoquyen1913.github.io/ai-outsourcing-studio/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Outsourcing Studio">
+<meta property="og:title" content="AI Outsourcing Studio — pitch one idea, a full AI company ships it">
+<meta property="og:description" content="An open-source Claude Code extension. Nine AI roles design, build, test, and ship a working web app autonomously — you pitch once and watch.">
+<meta property="og:url" content="https://caoquyen1913.github.io/ai-outsourcing-studio/">
+<meta property="og:image" content="https://caoquyen1913.github.io/ai-outsourcing-studio/og-hero.png">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Outsourcing Studio — a multi-agent AI software company for Claude Code">
+<meta name="twitter:description" content="Pitch one idea. CEO, CTO, Designer, Dev, QA and a Devil's Advocate autonomously ship a working app. Open-source, MIT.">
+<meta name="twitter:image" content="https://caoquyen1913.github.io/ai-outsourcing-studio/og-hero.png">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='108' fill='%234F46E5'/%3E%3Ccircle cx='256' cy='256' r='46' fill='white'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Structured data: SoftwareApplication -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "AI Outsourcing Studio",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Windows, macOS, Linux",
+  "description": "An open-source Claude Code extension that installs a simulated multi-agent software outsourcing company (CEO, CTO, BA, Designer, Dev, DBA, Ops, QA, Devil's Advocate). Pitch one idea and the agents autonomously design, build, test, and ship a working web app.",
+  "url": "https://caoquyen1913.github.io/ai-outsourcing-studio/",
+  "downloadUrl": "https://www.npmjs.com/package/ai-outsourcing-studio",
+  "codeRepository": "https://github.com/Caoquyen1913/ai-outsourcing-studio",
+  "license": "https://opensource.org/licenses/MIT",
+  "programmingLanguage": "JavaScript",
+  "author": { "@type": "Person", "name": "caoquyen1913" },
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<!-- Structured data: FAQ (helps AI answer engines) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is AI Outsourcing Studio?",
+      "acceptedAnswer": { "@type": "Answer", "text": "AI Outsourcing Studio is an open-source extension for Claude Code that installs a simulated software outsourcing company into your setup. Nine specialist AI roles — CEO, CTO, BA, Designer, Dev, DBA, Ops, QA, and a Devil's Advocate — collaborate autonomously to turn a one-line idea into a working web application." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I install it?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Run 'npx ai-outsourcing-studio install'. It installs into your global ~/.claude/ directory and adds /aos:* slash commands available in any Claude Code session." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it free and open source?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. AI Outsourcing Studio is free and released under the MIT license. The source is on GitHub and the package is published on npm." }
+    },
+    {
+      "@type": "Question",
+      "name": "How is it different from prompting a single AI agent?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Instead of one agent writing code, the work is split across nine accountable roles with strict lanes, plus a Devil's Advocate that stress-tests every major decision before it is committed. This produces product thinking, a design contract, a test plan, and adversarial review — not just a wall of code." }
+    }
+  ]
+}
+</script>
+
+<style>
+  :root {
+    --bg: #0B0A14; --bg2: #14122A; --panel: #14121F; --tile: #1C1930;
+    --ink: #ECEAF6; --muted: #A29DB8; --line: #262238;
+    --indigo: #6366F1; --violet: #A78BFA; --blue: #60A5FA; --green: #34D399;
+    --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans); color: var(--ink); line-height: 1.6;
+    background:
+      radial-gradient(1100px 700px at 85% -8%, rgba(139,92,246,.20), transparent 60%),
+      radial-gradient(900px 600px at 5% 8%, rgba(37,99,235,.16), transparent 55%),
+      var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* nav */
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
+  .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 18px; }
+  .brand svg { width: 34px; height: 34px; }
+  .nav-links { display: flex; gap: 22px; align-items: center; font-size: 14px; font-weight: 500; }
+  .nav-links a { color: var(--muted); text-decoration: none; }
+  .nav-links a:hover { color: var(--ink); }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px;
+    padding: 10px 18px; border-radius: 10px; text-decoration: none; border: 1px solid transparent;
+  }
+  .btn-primary { background: linear-gradient(135deg, #6D28D9, #4F46E5); color: #fff; }
+  .btn-ghost { border-color: var(--line); color: var(--ink); }
+  .btn:hover { filter: brightness(1.08); }
+
+  /* hero */
+  header.hero { padding: 60px 0 40px; text-align: center; }
+  .eyebrow { font-family: var(--mono); font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: var(--violet); }
+  h1 { font-size: clamp(38px, 6vw, 68px); line-height: 1.05; font-weight: 800; letter-spacing: -.03em; margin: 18px 0; text-wrap: balance; }
+  h1 .grad { background: linear-gradient(90deg, var(--violet), var(--blue)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p.lead { font-size: clamp(17px, 2.2vw, 21px); color: var(--muted); max-width: 62ch; margin: 0 auto 30px; }
+  .cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 26px; }
+  .install {
+    display: inline-flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 16px;
+    background: var(--tile); border: 1px solid var(--line); border-radius: 12px; padding: 12px 18px; color: var(--ink);
+  }
+  .install .sig { color: var(--green); }
+  .hero-img { margin-top: 44px; }
+  .hero-img img { width: 100%; max-width: 900px; border-radius: 16px; border: 1px solid var(--line); box-shadow: 0 40px 90px -40px rgba(0,0,0,.8); }
+
+  /* sections */
+  section { padding: 56px 0; }
+  section h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 800; letter-spacing: -.02em; text-align: center; margin-bottom: 12px; text-wrap: balance; }
+  section .sub { text-align: center; color: var(--muted); max-width: 60ch; margin: 0 auto 40px; }
+
+  .pipe { font-family: var(--mono); text-align: center; font-size: clamp(14px, 2.4vw, 20px); color: var(--ink); background: var(--tile); border: 1px solid var(--line); border-radius: 14px; padding: 22px; overflow-x: auto; }
+  .pipe .arr { color: var(--indigo); }
+  .pipe .ship { color: var(--green); font-weight: 700; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
+  .card .role { font-size: 26px; }
+  .card h3 { font-size: 17px; margin: 10px 0 6px; }
+  .card p { font-size: 14px; color: var(--muted); }
+
+  .feat { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .feat .item { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 24px; }
+  .feat h3 { font-size: 18px; margin-bottom: 8px; }
+  .feat p { color: var(--muted); font-size: 15px; }
+
+  .faq details { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 4px 20px; margin-bottom: 12px; }
+  .faq summary { cursor: pointer; font-weight: 600; padding: 16px 0; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; color: var(--violet); font-size: 22px; }
+  .faq details[open] summary::after { content: "\2013"; }
+  .faq p { color: var(--muted); padding-bottom: 18px; font-size: 15px; }
+
+  footer { border-top: 1px solid var(--line); padding: 40px 0; text-align: center; color: var(--muted); font-size: 14px; }
+  footer a { color: var(--violet); text-decoration: none; }
+
+  @media (max-width: 640px) { .nav-links a.hideon { display: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav>
+    <div class="brand">
+      <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6D28D9"/><stop offset=".55" stop-color="#4F46E5"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs>
+        <rect x="16" y="16" width="480" height="480" rx="108" fill="url(#lg)"/>
+        <g stroke="#fff" stroke-opacity=".42" stroke-width="7" stroke-linecap="round"><line x1="256" y1="256" x2="256" y2="120"/><line x1="256" y1="256" x2="374" y2="188"/><line x1="256" y1="256" x2="374" y2="324"/><line x1="256" y1="256" x2="256" y2="392"/><line x1="256" y1="256" x2="138" y2="324"/><line x1="256" y1="256" x2="138" y2="188"/></g>
+        <circle cx="256" cy="256" r="46" fill="#fff"/>
+        <g fill="#EEF2FF"><circle cx="256" cy="120" r="26"/><circle cx="374" cy="188" r="26"/><circle cx="374" cy="324" r="26"/><circle cx="256" cy="392" r="26"/><circle cx="138" cy="324" r="26"/><circle cx="138" cy="188" r="26"/></g>
+      </svg>
+      AI Outsourcing Studio
+    </div>
+    <div class="nav-links">
+      <a href="#how" class="hideon">How it works</a>
+      <a href="#roles" class="hideon">Roles</a>
+      <a href="#faq" class="hideon">FAQ</a>
+      <a href="https://github.com/Caoquyen1913/ai-outsourcing-studio">GitHub</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="eyebrow">Open-source · Claude Code extension</div>
+    <h1>Pitch one idea.<br>A full <span class="grad">AI software company</span> ships it.</h1>
+    <p class="lead">AI Outsourcing Studio installs a simulated software agency into Claude Code. Nine specialist AI roles — CEO, CTO, Designer, Dev, DBA, Ops, QA, and a Devil's Advocate — design, build, test, and ship a working web app autonomously while you watch.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="https://github.com/Caoquyen1913/ai-outsourcing-studio">★ Star on GitHub</a>
+      <a class="btn btn-ghost" href="https://www.npmjs.com/package/ai-outsourcing-studio">View on npm</a>
+    </div>
+    <div><span class="install"><span class="sig">$</span> npx ai-outsourcing-studio install</span></div>
+    <div class="hero-img">
+      <img src="og-hero.png" alt="AI Outsourcing Studio — pitch one idea, ship a whole app" width="900" loading="lazy">
+    </div>
+  </header>
+
+  <section id="how">
+    <h2>How it works</h2>
+    <p class="sub">You pitch the CEO once. The roles debate, hand off work among themselves, and you come back to a shipped project — no micromanaging.</p>
+    <div class="pipe">CEO <span class="arr">&rarr;</span> BA <span class="arr">&rarr;</span> Designer <span class="arr">&rarr;</span> CTO <span class="arr">&rarr;</span> DBA + Ops <span class="arr">&rarr;</span> Dev <span class="arr">&rarr;</span> QA <span class="arr">&rarr;</span> bug loop <span class="arr">&rarr;</span> <span class="ship">ship &#10003;</span></div>
+  </section>
+
+  <section id="roles">
+    <h2>Nine roles, one shipped app</h2>
+    <p class="sub">Each role is a Claude subagent with its own system prompt, tools, and strict lane. No one asks upward for permission to do their own job.</p>
+    <div class="grid">
+      <div class="card"><div class="role">🧭</div><h3>CEO</h3><p>Owns vision, scope, and win conditions. The only role that talks to you.</p></div>
+      <div class="card"><div class="role">📋</div><h3>BA / PO</h3><p>Turns the brief into testable user stories and acceptance criteria.</p></div>
+      <div class="card"><div class="role">🎨</div><h3>Designer</h3><p>Owns the UI: design tokens, layout, screens, and copy.</p></div>
+      <div class="card"><div class="role">🏗️</div><h3>CTO</h3><p>Chooses the tech stack and system architecture; reviews every wave.</p></div>
+      <div class="card"><div class="role">🗄️</div><h3>DBA</h3><p>Designs the data model and writes the migrations.</p></div>
+      <div class="card"><div class="role">⚙️</div><h3>Ops</h3><p>Sets up CI, deploy, and the release runbook.</p></div>
+      <div class="card"><div class="role">💻</div><h3>Dev</h3><p>Implements the code in waves and commits it for review.</p></div>
+      <div class="card"><div class="role">🔍</div><h3>QA / QC</h3><p>Owns test strategy and a bug loop that runs until zero defects.</p></div>
+      <div class="card"><div class="role">😈</div><h3>Devil's Advocate</h3><p>Stress-tests every major decision before it is committed.</p></div>
+    </div>
+  </section>
+
+  <section id="why">
+    <h2>Why a company beats a single agent</h2>
+    <p class="sub">Prompting one agent to “build me an app” gives you code with no product thinking, no design contract, and no one playing skeptic.</p>
+    <div class="feat">
+      <div class="item"><h3>Autonomy Doctrine</h3><p>You are a client, not a collaborator. The CEO asks at most three strategic questions — often zero — then the company runs silent until sign-off.</p></div>
+      <div class="item"><h3>Delegation matrix</h3><p>CTO owns the stack, Designer owns the UI, DBA owns the schema, QA owns tests. Every decision has an accountable owner.</p></div>
+      <div class="item"><h3>Bug loop to zero</h3><p>Every defect becomes a tracked task with file:line refs. No wave ships with an open bug — QA re-verifies until zero.</p></div>
+      <div class="item"><h3>Adversarial review</h3><p>A dedicated Devil's Advocate debates every artifact — SPEC, architecture, schema, each code wave — so plausible-but-wrong output doesn't survive.</p></div>
+    </div>
+  </section>
+
+  <section id="install">
+    <h2>Get started in one line</h2>
+    <p class="sub">Installs into your global <code>~/.claude/</code> and adds <code>/aos:*</code> commands to any Claude Code session. Your existing hooks and extensions are untouched.</p>
+    <div class="pipe" style="text-align:left">
+<span class="sig" style="color:var(--green)">$</span> npx ai-outsourcing-studio install<br>
+<span style="color:var(--muted)"># then, in any project folder:</span><br>
+<span class="sig" style="color:var(--green)">$</span> claude<br>
+&gt; /aos:idea <span style="color:var(--violet)">"a todo list web app with Google auth"</span>
+    </div>
+    <p class="sub" style="margin-top:24px">Requires <a href="https://claude.com/claude-code" style="color:var(--violet)">Claude Code</a> and Node.js ≥ 18.</p>
+  </section>
+
+  <section id="faq" class="faq">
+    <h2>Frequently asked questions</h2>
+    <details open><summary>What is AI Outsourcing Studio?</summary><p>An open-source extension for Claude Code that installs a simulated software outsourcing company. Nine specialist AI roles collaborate autonomously to turn a one-line idea into a working web application.</p></details>
+    <details><summary>How do I install it?</summary><p>Run <code>npx ai-outsourcing-studio install</code>. It installs into your global <code>~/.claude/</code> directory and adds <code>/aos:*</code> slash commands available in any Claude Code session.</p></details>
+    <details><summary>Is it free and open source?</summary><p>Yes — free and MIT-licensed. The source is on GitHub and the package is published on npm.</p></details>
+    <details><summary>How is it different from prompting a single AI agent?</summary><p>Instead of one agent writing code, the work is split across nine accountable roles with strict lanes, plus a Devil's Advocate that stress-tests every major decision. You get product thinking, a design contract, a test plan, and adversarial review — not just a wall of code.</p></details>
+    <details><summary>Does it work with other AI tools?</summary><p>The native <code>/aos:*</code> commands and subagents are Claude Code only, but the studio also ships canonical AGENTS.md, GEMINI.md, and a Cursor rule so you can drive the same project from other agentic tools.</p></details>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <p><strong>AI Outsourcing Studio</strong> — a multi-agent AI software company for Claude Code.</p>
+    <p style="margin-top:8px">
+      <a href="https://github.com/Caoquyen1913/ai-outsourcing-studio">GitHub</a> ·
+      <a href="https://www.npmjs.com/package/ai-outsourcing-studio">npm</a> ·
+      <a href="https://github.com/Caoquyen1913/ai-outsourcing-studio/blob/main/LICENSE">MIT License</a>
+    </p>
+    <p style="margin-top:12px; opacity:.7">Built for Claude Code · © 2026 caoquyen1913 and contributors</p>
+  </div>
+</footer>
+</body>
+</html>
