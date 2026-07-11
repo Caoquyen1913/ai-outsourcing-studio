@@ -1,6 +1,6 @@
 {
   "name": "ai-outsourcing-studio",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "A Claude Code extension that installs a multi-agent software outsourcing company into ~/.claude/. Pitch an idea once and watch CEO, CTO, BA, Designer, Dev, DBA, Ops, QA, and a Devil's Advocate collaborate autonomously to ship a complete web app.",
   "type": "module",
   "bin": {
