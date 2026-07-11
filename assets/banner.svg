@@ -1,0 +1,70 @@
+<svg width="920" height="240" viewBox="0 0 920 240" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AI Outsourcing Studio">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="920" y2="240" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4C1D95"/>
+      <stop offset="0.5" stop-color="#4F46E5"/>
+      <stop offset="1" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="node" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#E0E7FF"/>
+    </linearGradient>
+  </defs>
+
+  <!-- card -->
+  <rect x="0" y="0" width="920" height="240" rx="28" fill="url(#bg)"/>
+  <rect x="0" y="0" width="920" height="240" rx="28" fill="#000" opacity="0.05"/>
+
+  <!-- icon: hub + 6 satellites -->
+  <g transform="translate(120,120)">
+    <g stroke="#FFFFFF" stroke-opacity="0.42" stroke-width="4" stroke-linecap="round">
+      <line x1="0" y1="0" x2="0" y2="-64"/>
+      <line x1="0" y1="0" x2="56" y2="-32"/>
+      <line x1="0" y1="0" x2="56" y2="32"/>
+      <line x1="0" y1="0" x2="0" y2="64"/>
+      <line x1="0" y1="0" x2="-56" y2="32"/>
+      <line x1="0" y1="0" x2="-56" y2="-32"/>
+    </g>
+    <circle cx="0" cy="0" r="22" fill="url(#node)"/>
+    <g fill="url(#node)">
+      <circle cx="0" cy="-64" r="12"/>
+      <circle cx="56" cy="-32" r="12"/>
+      <circle cx="56" cy="32" r="12"/>
+      <circle cx="0" cy="64" r="12"/>
+      <circle cx="-56" cy="32" r="12"/>
+      <circle cx="-56" cy="-32" r="12"/>
+    </g>
+  </g>
+
+  <!-- wordmark -->
+  <text x="238" y="112" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="52" font-weight="700" fill="#FFFFFF" letter-spacing="-0.5">AI Outsourcing Studio</text>
+  <text x="240" y="156" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="23" font-weight="400" fill="#C7D2FE">Pitch once. A full AI software company ships it.</text>
+
+  <!-- role chips -->
+  <g font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="15" font-weight="600" fill="#EEF2FF">
+    <g>
+      <rect x="240" y="180" width="66" height="30" rx="15" fill="#FFFFFF" fill-opacity="0.14"/>
+      <text x="273" y="200" text-anchor="middle">CEO</text>
+    </g>
+    <g>
+      <rect x="314" y="180" width="66" height="30" rx="15" fill="#FFFFFF" fill-opacity="0.14"/>
+      <text x="347" y="200" text-anchor="middle">CTO</text>
+    </g>
+    <g>
+      <rect x="388" y="180" width="80" height="30" rx="15" fill="#FFFFFF" fill-opacity="0.14"/>
+      <text x="428" y="200" text-anchor="middle">Designer</text>
+    </g>
+    <g>
+      <rect x="476" y="180" width="60" height="30" rx="15" fill="#FFFFFF" fill-opacity="0.14"/>
+      <text x="506" y="200" text-anchor="middle">Dev</text>
+    </g>
+    <g>
+      <rect x="544" y="180" width="56" height="30" rx="15" fill="#FFFFFF" fill-opacity="0.14"/>
+      <text x="572" y="200" text-anchor="middle">QA</text>
+    </g>
+    <g>
+      <rect x="608" y="180" width="150" height="30" rx="15" fill="#FFFFFF" fill-opacity="0.14"/>
+      <text x="683" y="200" text-anchor="middle">Devil's Advocate</text>
+    </g>
+  </g>
+</svg>
