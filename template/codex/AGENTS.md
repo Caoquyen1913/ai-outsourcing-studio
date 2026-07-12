@@ -20,7 +20,7 @@ Pipeline order: **CEO → PO → Designer → CTO → DBA + Ops → Dev (wave by
 `$HOME/.claude/agents/aos-<role>.md` — one self-contained system prompt per role: `aos-ceo`, `aos-cto`, `aos-po`, `aos-designer`, `aos-dev`, `aos-dba`, `aos-ops`, `aos-qa`, `aos-devils-advocate`. Adopt the relevant file when acting as that role.
 
 ## Skills (Codex-native)
-Installed at `$HOME/.codex/skills/aos-*/`. Codex loads them implicitly by description, or list them with `/skills`:
+Installed at `$HOME/.codex/skills/aos-*/`. Codex loads them implicitly by description, or list them from the `/` menu. Protocol skills:
 - `aos-sync` — append/read the standup sync log (mandatory at the start and end of every turn).
 - `aos-handoff` — pass a deliverable from one role to the next (emulate the spawn as above).
 - `aos-debate` — run the mandatory pro/con review with the Devil's Advocate.
@@ -35,14 +35,16 @@ node "$HOME/.claude/ai-outsourcing-studio/scripts/task.mjs" --help
 ```
 Every defect becomes a `B-NNN` bug task; every turn ends with a `sync` entry. Per-project state (`.company/`, `deliverables/`) is created in the current working directory, never in a home directory.
 
-## Entry-point commands
-Custom prompts (deprecated by Codex but functional — skills are the long-term mechanism):
-- `/prompts:aos-idea "<pitch>"` — drop a new idea into the company and start the pipeline.
-- `/prompts:aos-board` — print the live board.
-- `/prompts:aos-tasks` — task board + recent sync log.
-- `/prompts:aos-standup` — one-line status from every role.
-- `/prompts:aos-kickoff` — re-run CEO discovery to revise scope.
-- `/prompts:aos-ship` — final Ops + QA + CEO sign-off.
+## Entry-point skills
+Launch the studio from the `/` menu (these are also installed as skills at `$HOME/.codex/skills/aos-*/`):
+- `aos-idea` — drop a new idea into the company and start the pipeline (give it a one-line pitch).
+- `aos-board` — print the live board.
+- `aos-tasks` — task board + recent sync log.
+- `aos-standup` — one-line status from every role.
+- `aos-kickoff` — re-run CEO discovery to revise scope.
+- `aos-ship` — final Ops + QA + CEO sign-off.
+
+The same entry points also exist as legacy custom prompts (`/prompts:aos-idea "<pitch>"`, `/prompts:aos-board`, …) for older Codex builds that still index `~/.codex/prompts/`.
 
 You can always trigger the same behavior in plain language, e.g. *"run the AI Outsourcing Studio on this idea: …"*.
 

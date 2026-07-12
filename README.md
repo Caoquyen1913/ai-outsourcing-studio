@@ -175,8 +175,8 @@ npx ai-outsourcing-studio install --codex
 This adds a Codex layer under `~/.codex/` on top of the shared company library in `~/.claude/`:
 
 - A managed block is **merged non-destructively** into `~/.codex/AGENTS.md` (your existing global instructions are preserved — the block sits between `<!-- AOS:START -->` / `<!-- AOS:END -->` markers and is cleanly removed on uninstall).
-- The studio **skills** are copied to `~/.codex/skills/aos-*/` in Codex's native `SKILL.md` format.
-- Entry-point **custom prompts** are installed to `~/.codex/prompts/`, invoked as `/prompts:aos-idea "<pitch>"`, `/prompts:aos-board`, `/prompts:aos-tasks`, `/prompts:aos-standup`, `/prompts:aos-kickoff`, `/prompts:aos-ship`.
+- The studio **skills** are copied to `~/.codex/skills/aos-*/` in Codex's native `SKILL.md` format. This includes both the protocol skills (`aos-sync`, `aos-handoff`, `aos-debate`, `aos-deliverable-scaffold`) and the **entry-point skills** you launch from the `/` menu: `aos-idea` (give it a one-line pitch), `aos-board`, `aos-tasks`, `aos-standup`, `aos-kickoff`, `aos-ship`.
+- The same entry points are **also** installed as legacy custom prompts under `~/.codex/prompts/` (`/prompts:aos-idea "<pitch>"`, `/prompts:aos-board`, …) for older Codex builds that still index the prompts directory. Current Codex builds surface skills in the `/` menu but no longer list `~/.codex/prompts/`, so prefer the `aos-*` skills.
 
 Because Codex has no subagents, it runs the same pipeline **sequentially in one session** — adopting each role's prompt from `~/.claude/agents/aos-*.md` in turn and emulating handoffs and Devil's Advocate debates itself. Once installed, `npx ai-outsourcing-studio update` keeps the Codex layer in sync automatically; `uninstall` removes it and restores your `AGENTS.md`.
 

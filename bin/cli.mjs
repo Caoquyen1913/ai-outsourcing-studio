@@ -318,7 +318,13 @@ async function installCodex(manifest, { force }) {
   const plan = [];
   // Skills → ~/.codex/skills/  (identical SKILL.md format Codex loads natively)
   await planCopyTree(join(templateDir, "skills"), join(CODEX_HOME, "skills"), plan);
-  // Custom prompts → ~/.codex/prompts/  (invoked as /prompts:aos-*)
+  // Entry-point skills (idea/board/kickoff/ship/standup/tasks) → ~/.codex/skills/
+  // These are the primary way to launch the studio: current Codex builds surface
+  // skills in the `/` menu but no longer list ~/.codex/prompts, so entry points
+  // ship as skills to stay discoverable.
+  await planCopyTree(join(templateDir, "codex", "skills"), join(CODEX_HOME, "skills"), plan);
+  // Custom prompts → ~/.codex/prompts/  (legacy /prompts:aos-* entry points, kept
+  // for older Codex builds that still index the prompts directory).
   await planCopyTree(join(templateDir, "codex", "prompts"), join(CODEX_HOME, "prompts"), plan);
 
   // Every file we ship is namespaced (aos-*), so overwriting our own is safe
@@ -486,8 +492,8 @@ function printSuccessBanner({ codex = false } = {}) {
   console.log(`  /aos:tasks\n`);
   if (codex) {
     console.log(`Codex CLI support installed into ~/.codex/ (AGENTS.md block + skills + prompts).`);
-    console.log(`Start it from any Codex session:`);
-    console.log(`  /prompts:aos-idea "your product pitch"\n`);
+    console.log(`Start it from any Codex session — pick the aos-idea skill from the / menu,`);
+    console.log(`or on older builds: /prompts:aos-idea "your product pitch"\n`);
   }
   console.log(`Per-project state (.company/, deliverables/) will be created in the folder`);
   console.log(`you run the commands from. The global install only holds framework code.\n`);
