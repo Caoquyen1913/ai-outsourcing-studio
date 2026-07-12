@@ -23,6 +23,8 @@
     "claude",
     "anthropic",
     "claude-code-extension",
+    "codex",
+    "openai-codex",
     "agents",
     "subagents",
     "ai-agents",

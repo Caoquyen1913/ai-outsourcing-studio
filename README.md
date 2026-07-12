@@ -164,9 +164,25 @@ npx ai-outsourcing-studio uninstall
 
 Uninstall reads `~/.claude/aos-file-manifest.json` and removes exactly the files it installed, plus its tagged entries in `settings.json`. Your other hooks, agents, skills, and extensions are untouched.
 
-## Multi-tool notes
+## Use with OpenAI Codex CLI
 
-The studio ships canonical `AGENTS.md`, `GEMINI.md`, and a Cursor rule in `~/.claude/ai-outsourcing-studio/references/`. To drive the same project from another agentic tool (Antigravity, Gemini CLI, Cursor), copy the relevant file to your project root — e.g. `cp ~/.claude/ai-outsourcing-studio/references/AGENTS.md .`. Native `/aos:*` slash commands and subagents are Claude Code only; other tools drive the pipeline by loading role prompts from `~/.claude/agents/aos-*.md` via file includes.
+The studio integrates with [OpenAI Codex CLI](https://developers.openai.com/codex/cli) as a first-class second front-end. Install both at once:
+
+```bash
+npx ai-outsourcing-studio install --codex
+```
+
+This adds a Codex layer under `~/.codex/` on top of the shared company library in `~/.claude/`:
+
+- A managed block is **merged non-destructively** into `~/.codex/AGENTS.md` (your existing global instructions are preserved — the block sits between `<!-- AOS:START -->` / `<!-- AOS:END -->` markers and is cleanly removed on uninstall).
+- The studio **skills** are copied to `~/.codex/skills/aos-*/` in Codex's native `SKILL.md` format.
+- Entry-point **custom prompts** are installed to `~/.codex/prompts/`, invoked as `/prompts:aos-idea "<pitch>"`, `/prompts:aos-board`, `/prompts:aos-tasks`, `/prompts:aos-standup`, `/prompts:aos-kickoff`, `/prompts:aos-ship`.
+
+Because Codex has no subagents, it runs the same pipeline **sequentially in one session** — adopting each role's prompt from `~/.claude/agents/aos-*.md` in turn and emulating handoffs and Devil's Advocate debates itself. Once installed, `npx ai-outsourcing-studio update` keeps the Codex layer in sync automatically; `uninstall` removes it and restores your `AGENTS.md`.
+
+## Other tools
+
+The studio also ships canonical `AGENTS.md`, `GEMINI.md`, and a Cursor rule in `~/.claude/ai-outsourcing-studio/references/`. To drive the same project from another agentic tool (Antigravity, Gemini CLI, Cursor), copy the relevant file to your project root — e.g. `cp ~/.claude/ai-outsourcing-studio/references/AGENTS.md .`. Native `/aos:*` slash commands and subagents are Claude Code only; other tools drive the pipeline by loading role prompts from `~/.claude/agents/aos-*.md`.
 
 ## Requirements
 

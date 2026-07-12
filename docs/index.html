@@ -75,6 +75,11 @@
       "@type": "Question",
       "name": "How is it different from prompting a single AI agent?",
       "acceptedAnswer": { "@type": "Answer", "text": "Instead of one agent writing code, the work is split across nine accountable roles with strict lanes, plus a Devil's Advocate that stress-tests every major decision before it is committed. This produces product thinking, a design contract, a test plan, and adversarial review — not just a wall of code." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does AI Outsourcing Studio work with OpenAI Codex CLI?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Run 'npx ai-outsourcing-studio install --codex' to add OpenAI Codex CLI support: a managed block is merged into ~/.codex/AGENTS.md, the studio skills are installed in Codex's native SKILL.md format, and entry points work as /prompts:aos-idea. Since Codex has no subagents, it runs the same pipeline sequentially in one session. It also supports Gemini CLI, Cursor, and Antigravity via shipped AGENTS.md/GEMINI.md/Cursor rules." }
     }
   ]
 }
@@ -251,7 +256,7 @@
     <details><summary>How do I install it?</summary><p>Run <code>npx ai-outsourcing-studio install</code>. It installs into your global <code>~/.claude/</code> directory and adds <code>/aos:*</code> slash commands available in any Claude Code session.</p></details>
     <details><summary>Is it free and open source?</summary><p>Yes — free and MIT-licensed. The source is on GitHub and the package is published on npm.</p></details>
     <details><summary>How is it different from prompting a single AI agent?</summary><p>Instead of one agent writing code, the work is split across nine accountable roles with strict lanes, plus a Devil's Advocate that stress-tests every major decision. You get product thinking, a design contract, a test plan, and adversarial review — not just a wall of code.</p></details>
-    <details><summary>Does it work with other AI tools?</summary><p>The native <code>/aos:*</code> commands and subagents are Claude Code only, but the studio also ships canonical AGENTS.md, GEMINI.md, and a Cursor rule so you can drive the same project from other agentic tools.</p></details>
+    <details><summary>Does it work with OpenAI Codex CLI or other tools?</summary><p>Yes. Run <code>npx ai-outsourcing-studio install --codex</code> to add OpenAI Codex CLI support — a managed block is merged into <code>~/.codex/AGENTS.md</code>, the skills are installed in Codex's native format, and entry points work as <code>/prompts:aos-idea</code>. The studio also ships canonical AGENTS.md, GEMINI.md, and a Cursor rule for Gemini CLI, Cursor, and Antigravity. Codex runs the pipeline sequentially since it has no subagents.</p></details>
   </section>
 
 </div>

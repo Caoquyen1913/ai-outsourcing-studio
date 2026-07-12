@@ -86,6 +86,9 @@ Full support. Subagents spawn in parallel via the Task tool. Hooks maintain `BOA
 ### Google Gemini CLI
 Loads `GEMINI.md` automatically. Slash commands are in `.gemini/commands/*.toml` — same names (`/aos:idea`, etc.) but they drive a single-session, sequential execution of the pipeline since Gemini CLI does not spawn parallel subagents. Within one turn, read the relevant `.claude/agents/<role>.md` file and adopt its system prompt as if you were that role; finish the role's deliverable, then proceed to the next role in the pipeline. Update `.company/state.json` and run `task.mjs sync` between role switches exactly as a Claude Code subagent would.
 
+### OpenAI Codex CLI
+Install with `npx ai-outsourcing-studio install --codex`. Codex loads `~/.codex/AGENTS.md` globally (a managed block is merged in non-destructively) plus any repo-root `AGENTS.md`. Codex has **no subagents**, so it runs the pipeline sequentially inside one session: adopt each role's system prompt from `~/.claude/agents/aos-<role>.md` in turn, and emulate handoffs and Devil's Advocate debates yourself rather than spawning them. Skills install to `~/.codex/skills/aos-*/` (the same `SKILL.md` format Codex loads natively). Entry points are custom prompts invoked as `/prompts:aos-idea "<pitch>"`, `/prompts:aos-board`, `/prompts:aos-tasks`, `/prompts:aos-standup`, `/prompts:aos-kickoff`, `/prompts:aos-ship`. The shared company library and `task.mjs` live under `~/.claude/` and are referenced by absolute path, so nothing is duplicated or rewritten.
+
 ### Cursor
 Loads `.cursor/rules/ai-outsourcing-studio.mdc` on every Composer turn. When the user says *"act as CEO"* (or any role), open `.claude/agents/<role>.md` via `@file` and follow it. Cursor does not have slash commands in the same sense, so use natural language: *"act as CEO and process the pitch in `.company/inbox.md`"*, *"run a standup across all roles"*, etc.
 

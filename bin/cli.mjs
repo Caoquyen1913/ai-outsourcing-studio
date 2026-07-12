@@ -43,6 +43,15 @@ const CLAUDE_HOME = resolve(
 const MANIFEST_PATH = resolve(CLAUDE_HOME, "aos-file-manifest.json");
 const SETTINGS_PATH = resolve(CLAUDE_HOME, "settings.json");
 
+// Optional OpenAI Codex CLI target. Honours AOS_CODEX_HOME for sandbox testing
+// without touching the real ~/.codex. Codex reads ~/.codex/AGENTS.md globally,
+// loads skills from ~/.codex/skills/, and custom prompts from ~/.codex/prompts/.
+const CODEX_HOME = resolve(process.env.AOS_CODEX_HOME || join(homedir(), ".codex"));
+
+// Markers delimiting our managed block inside a possibly user-owned AGENTS.md.
+const AOS_MARK_START = "<!-- AOS:START";
+const AOS_MARK_END = "<!-- AOS:END -->";
+
 // Package version
 const pkg = JSON.parse(readFileSync(resolve(packageDir, "package.json"), "utf8"));
 
@@ -53,10 +62,15 @@ Usage:
 
 Commands:
   install           Install into ~/.claude/ (default if no command given)
-  uninstall         Remove all files this installer put in ~/.claude/
+  uninstall         Remove all files this installer put in ~/.claude/ (and ~/.codex/)
   update            Reinstall (overwrites existing files, keeps your settings.json hooks)
   --version         Print version
   --help            Show this help
+
+Flags:
+  --codex           Also install OpenAI Codex CLI support into ~/.codex/
+                    (AGENTS.md block + skills + /prompts:aos-* commands). Once
+                    installed, 'update' keeps it in sync automatically.
 
 After install, use the studio from any Claude Code session:
   /aos:idea "your product pitch"    # start a new project
@@ -86,12 +100,14 @@ if (cmd === "--version" || cmd === "-v") {
   process.exit(0);
 }
 
+const withCodex = args.includes("--codex") || args.includes("--with-codex");
+
 try {
   if (cmd === "install" || cmd === "init") {
     const force = args.includes("--force") || cmd === "update";
-    await install({ force });
+    await install({ force, codex: withCodex });
   } else if (cmd === "update") {
-    await install({ force: true });
+    await install({ force: true, codex: withCodex });
   } else if (cmd === "uninstall" || cmd === "remove") {
     await uninstall();
   } else {
@@ -106,9 +122,16 @@ try {
 
 // ---------- install ----------
 
-async function install({ force }) {
+async function install({ force, codex = false }) {
   if (!existsSync(templateDir)) {
     throw new Error(`template directory missing at ${templateDir}`);
+  }
+
+  // Also (re)install Codex support if explicitly asked, or if a previous install
+  // recorded Codex files — so `update` keeps Codex in sync without re-passing --codex.
+  let wantCodex = codex;
+  if (!wantCodex && existsSync(MANIFEST_PATH)) {
+    try { wantCodex = !!JSON.parse(readFileSync(MANIFEST_PATH, "utf8")).codex_files; } catch {}
   }
 
   await mkdir(CLAUDE_HOME, { recursive: true });
@@ -176,10 +199,16 @@ async function install({ force }) {
     const rel = relative(CLAUDE_HOME, e.dst).replace(/\\/g, "/");
     manifest.files[rel] = await sha256(e.dst);
   }
+
+  // Optional Codex CLI surface (adds codex_* fields to the same manifest).
+  if (wantCodex) {
+    await installCodex(manifest, { force });
+  }
+
   await writeFile(MANIFEST_PATH, JSON.stringify(manifest, null, 2) + "\n");
   console.log(`  ✓ wrote manifest: ${relative(CLAUDE_HOME, MANIFEST_PATH).replace(/\\/g, "/")}`);
 
-  printSuccessBanner();
+  printSuccessBanner({ codex: wantCodex });
 }
 
 async function planCopyTree(srcDir, dstDir, plan) {
@@ -276,6 +305,73 @@ async function mergeSettings() {
   return added;
 }
 
+// ---------- codex install ----------
+
+// Installs OpenAI Codex CLI support into ~/.codex/ and records the files in the
+// shared manifest. Reuses the tool-neutral company library already installed
+// under ~/.claude/ (referenced by absolute path from the AGENTS.md block and the
+// prompts), so there are no rewritten paths that could drift out of sync.
+async function installCodex(manifest, { force }) {
+  console.log(`→ installing Codex CLI support into ${CODEX_HOME}`);
+  await mkdir(CODEX_HOME, { recursive: true });
+
+  const plan = [];
+  // Skills → ~/.codex/skills/  (identical SKILL.md format Codex loads natively)
+  await planCopyTree(join(templateDir, "skills"), join(CODEX_HOME, "skills"), plan);
+  // Custom prompts → ~/.codex/prompts/  (invoked as /prompts:aos-*)
+  await planCopyTree(join(templateDir, "codex", "prompts"), join(CODEX_HOME, "prompts"), plan);
+
+  // Every file we ship is namespaced (aos-*), so overwriting our own is safe
+  // regardless of --force; we never touch the user's own skills/prompts.
+  for (const e of plan) {
+    await mkdir(dirname(e.dst), { recursive: true });
+    await copyFile(e.src, e.dst);
+  }
+  console.log(`  ✓ copied ${plan.length} Codex files (skills + prompts)`);
+
+  // Non-destructive merge of our managed block into ~/.codex/AGENTS.md.
+  const agentsMode = await mergeCodexAgents();
+  console.log(`  ✓ ${agentsMode} AGENTS.md in ${CODEX_HOME}`);
+
+  // Record everything for a clean uninstall.
+  manifest.codex_home = CODEX_HOME;
+  manifest.codex_files = {};
+  for (const e of plan) {
+    const rel = relative(CODEX_HOME, e.dst).replace(/\\/g, "/");
+    manifest.codex_files[rel] = await sha256(e.dst);
+  }
+  manifest.codex_agents_md = agentsMode; // "created" | "appended" | "updated"
+}
+
+// Merge our block into ~/.codex/AGENTS.md without clobbering a user's existing
+// file. Returns "created" | "updated" | "appended".
+async function mergeCodexAgents() {
+  const block = (await readFile(join(templateDir, "codex", "AGENTS.md"), "utf8")).trimEnd();
+  const target = join(CODEX_HOME, "AGENTS.md");
+
+  if (!existsSync(target)) {
+    await writeFile(target, block + "\n");
+    return "created";
+  }
+
+  const current = await readFile(target, "utf8");
+  const startIdx = current.indexOf(AOS_MARK_START);
+  if (startIdx !== -1) {
+    const endMarkIdx = current.indexOf(AOS_MARK_END, startIdx);
+    if (endMarkIdx !== -1) {
+      const before = current.slice(0, startIdx).trimEnd();
+      const after = current.slice(endMarkIdx + AOS_MARK_END.length).replace(/^\n+/, "");
+      const merged = [before, block].filter(Boolean).join("\n\n") +
+        (after ? "\n\n" + after.trimEnd() : "") + "\n";
+      await writeFile(target, merged);
+      return "updated";
+    }
+  }
+  // No existing block — append ours, preserving the user's content.
+  await writeFile(target, current.trimEnd() + "\n\n" + block + "\n");
+  return "appended";
+}
+
 // ---------- uninstall ----------
 
 async function uninstall() {
@@ -325,11 +421,55 @@ async function uninstall() {
     } catch {}
   }
 
+  // Remove Codex support if this install added it.
+  if (manifest.codex_files || manifest.codex_home) {
+    await uninstallCodex(manifest);
+  }
+
   // Remove manifest itself
   await rm(MANIFEST_PATH, { force: true });
 
   console.log(`  ✓ removed ${removed} files and cleaned settings.json`);
   console.log(`\nUninstall complete.`);
+}
+
+async function uninstallCodex(manifest) {
+  const codexHome = resolve(manifest.codex_home || CODEX_HOME);
+  let removed = 0;
+  for (const rel of Object.keys(manifest.codex_files || {})) {
+    const abs = join(codexHome, rel);
+    if (existsSync(abs)) { await rm(abs, { force: true }); removed++; }
+  }
+
+  // Remove now-empty directories we created (deepest first).
+  const dirs = new Set();
+  for (const rel of Object.keys(manifest.codex_files || {})) {
+    let d = dirname(join(codexHome, rel));
+    while (d.startsWith(codexHome) && d !== codexHome) { dirs.add(d); d = dirname(d); }
+  }
+  for (const d of [...dirs].sort((a, b) => b.length - a.length)) {
+    try { if ((await readdir(d)).length === 0) await rm(d, { recursive: false, force: true }); } catch {}
+  }
+
+  // Un-merge our block from ~/.codex/AGENTS.md.
+  const target = join(codexHome, "AGENTS.md");
+  if (existsSync(target)) {
+    if (manifest.codex_agents_md === "created") {
+      await rm(target, { force: true });
+    } else {
+      const current = await readFile(target, "utf8");
+      const startIdx = current.indexOf(AOS_MARK_START);
+      const endMarkIdx = current.indexOf(AOS_MARK_END);
+      if (startIdx !== -1 && endMarkIdx !== -1) {
+        const cleaned = (current.slice(0, startIdx).trimEnd() + "\n" +
+          current.slice(endMarkIdx + AOS_MARK_END.length).replace(/^\n+/, "")).trim();
+        if (cleaned) await writeFile(target, cleaned + "\n");
+        else await rm(target, { force: true });
+      }
+    }
+  }
+
+  console.log(`  ✓ removed ${removed} Codex files and cleaned AGENTS.md in ${codexHome}`);
 }
 
 // ---------- util ----------
@@ -338,12 +478,17 @@ function posixify(p) {
   return p.replace(/\\/g, "/");
 }
 
-function printSuccessBanner() {
+function printSuccessBanner({ codex = false } = {}) {
   console.log(`\n✓ AI Outsourcing Studio v${pkg.version} installed into ~/.claude/\n`);
   console.log(`Start using it from any Claude Code session:`);
   console.log(`  /aos:idea "your product pitch"`);
   console.log(`  /aos:board`);
   console.log(`  /aos:tasks\n`);
+  if (codex) {
+    console.log(`Codex CLI support installed into ~/.codex/ (AGENTS.md block + skills + prompts).`);
+    console.log(`Start it from any Codex session:`);
+    console.log(`  /prompts:aos-idea "your product pitch"\n`);
+  }
   console.log(`Per-project state (.company/, deliverables/) will be created in the folder`);
   console.log(`you run the commands from. The global install only holds framework code.\n`);
   console.log(`To remove: npx ai-outsourcing-studio uninstall`);
